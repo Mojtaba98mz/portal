@@ -1,0 +1,19 @@
+spring:
+  profiles:
+    active: dev
+  datasource:
+    url: jdbc:postgresql://localhost:5432/testdb
+    username: postgres
+    password: changeme
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+# App Properties
+portal:
+  security:
+    authentication:
+      jwt:
+        base64-secret: MWM1ZmM3MTM1ZWUwYjNkOWRlMDI5YTRlZjk4MWFiOThmMzgxZjhkNDliZDI5YTMyYWVkMTJmY2ZlZDY2ZTVlN2UyNGZlNTVmZGFjZGMyYTAzN2YxNzViMzliYjhiNTYyYThmNTdiOTJmNGJjNjVkMDgyOWRiMjIxNWNlMTM1MTk=
+        token-validity-in-seconds: 86400

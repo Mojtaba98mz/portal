@@ -1,0 +1,7 @@
+  ${AnsiColor.GREEN}   ,---.        ,--.   ,---.           ,------.   ,-----.  ,------.  ,--------.   ,---.   ,--.
+  ${AnsiColor.GREEN}  /  O  \       |  |  /  O  \  ,-----. |  .--. ' '  .-.  ' |  .--. ' '--.  .--'  /  O  \  |  |
+  ${AnsiColor.GREEN} |  .-.  | ,--. |  | |  .-.  | '-----' |  '--' | |  | |  | |  '--'.'    |  |    |  .-.  | |  |
+  ${AnsiColor.GREEN} |  | |  | |  '-'  / |  | |  |         |  | --'  '  '-'  ' |  |\  \     |  |    |  | |  | |  '--.
+  ${AnsiColor.GREEN} `--' `--'  `-----'  `--' `--'         `--'       `-----'  `--' '--'    `--'    `--' `--' `-----'
+
+${AnsiColor.BRIGHT_BLUE}:: Portal  :: Running Spring Boot ${spring-boot.version} :: Startup profile(s) ${spring.profiles.active}
