@@ -2,15 +2,15 @@ package com.isiran.portal;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 @SpringBootApplication
+@EnableConfigurationProperties({LiquibaseProperties.class})
 public class PortalApplication {
 
-//	static Logger logger = LoggerFactory.getLogger(SpringBootSecurityJwtApplication.class);
-
-	public static void main(String[] args) {
-//		logger.error("error");
-    SpringApplication.run(PortalApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(PortalApplication.class, args);
+    }
 
 }

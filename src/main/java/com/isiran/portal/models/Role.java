@@ -1,39 +1,24 @@
 package com.isiran.portal.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import java.io.Serializable;
+
+@Data
 @Entity
 @Table(name = "roles")
-public class Role {
+//@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+public class Role implements Serializable {
+
+  private static final long serialVersionUID = 1L;
+
+  @NotNull
+  @Size(max = 50)
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
-
-  @Enumerated(EnumType.STRING)
-  @Column(length = 20)
-  private ERole name;
-
-  public Role() {
-
-  }
-
-  public Role(ERole name) {
-    this.name = name;
-  }
-
-  public Integer getId() {
-    return id;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
-  }
-
-  public ERole getName() {
-    return name;
-  }
-
-  public void setName(ERole name) {
-    this.name = name;
-  }
+  @Column(length = 50)
+  private String name;
 }
