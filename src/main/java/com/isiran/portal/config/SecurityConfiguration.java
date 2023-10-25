@@ -67,7 +67,7 @@ public class SecurityConfiguration { // extends WebSecurityConfigurerAdapter {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
         http
-                .cors(withDefaults())
+                .cors(cors->cors.disable())
                 .csrf(csrf -> csrf.disable())
                 .addFilterAfter(new SpaWebFilter(), BasicAuthenticationFilter.class)
                 .headers(headers ->
@@ -83,7 +83,7 @@ public class SecurityConfiguration { // extends WebSecurityConfigurerAdapter {
                 .authorizeHttpRequests(authz ->
                         // prettier-ignore
                         authz
-                                .requestMatchers(mvc.pattern("/index.html"), mvc.pattern("/*.js"), mvc.pattern("/*.map"), mvc.pattern("/*.css")).permitAll()
+                                .requestMatchers(mvc.pattern("/index.html"), mvc.pattern("/*.js"), mvc.pattern("/*.map"), mvc.pattern("/*.css"), mvc.pattern("/assets/**")).permitAll()
                                 .requestMatchers(mvc.pattern("/*.ico"), mvc.pattern("/*.png"), mvc.pattern("/*.svg"), mvc.pattern("/*.webapp")).permitAll()
                                 .requestMatchers(mvc.pattern("/content/**")).permitAll()
                                 .requestMatchers(mvc.pattern("/swagger-ui/**")).permitAll()
