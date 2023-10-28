@@ -11,9 +11,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-  String USERS_BY_LOGIN_CACHE = "usersByLogin";
+  String USERS_BY_USERNAME_CACHE = "usersByUsername";
 
   @EntityGraph(attributePaths = "authorities")
-  @Cacheable(cacheNames = USERS_BY_LOGIN_CACHE)
+  @Cacheable(cacheNames = USERS_BY_USERNAME_CACHE)
   Optional<User> findOneWithAuthoritiesByUsername(String username);
 }

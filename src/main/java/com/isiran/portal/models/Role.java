@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Data
 @Entity
 @Table(name = "roles")
-//@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Role implements Serializable {
 
   private static final long serialVersionUID = 1L;

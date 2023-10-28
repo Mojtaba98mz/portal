@@ -9,9 +9,23 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate:
+        cache:
+          use_second_level_cache: true
+          use_query_cache: false
+        generate_statistics: false
+        jdbc:
+          batch_size: 25
+    open-in-view: false
+    show-sql: true
 
 # App Properties
 portal:
+  cache: # Cache configuration
+    ehcache: # Ehcache configuration
+      time-to-live-seconds: 3600 # By default objects stay 1 hour in the cache
+      max-entries: 100 # Number of objects in each cache entry
   security:
     authentication:
       jwt:
