@@ -18,7 +18,6 @@ spring:
         jdbc:
           batch_size: 25
     open-in-view: false
-    show-sql: true
 
 # App Properties
 portal:
