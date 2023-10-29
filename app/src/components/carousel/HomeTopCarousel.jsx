@@ -14,12 +14,11 @@ const HomeTopCarousel = () => {
     // pauseOnHover: true,
   };
   return (
-    <div style={{ marginTop: 100, width: "100vw", height: 450 }}>
+    <div style={{ marginTop: 100, width: "100%", height: 450,overflow:"hidden" }}>
       <Slider {...settings}>
         <img src="http://193.151.146.199/img/2.0f3ba80f.jpg" height="400px" />
         <img src="http://193.151.146.199/img/3.6a19f663.jpg" height="400px" />
         <img src="http://193.151.146.199/img/2.0f3ba80f.jpg" height="400px" />
-        <img src="http://193.151.146.199/img/1.f725f065.jpg" height="400px" />
       </Slider>
       
     </div>

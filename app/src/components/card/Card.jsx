@@ -11,11 +11,11 @@ import ax from "../../assets/pics/s-agha-2.jpg"
 const CardInfo = () => {
   return (
     <div>
-      <Card sx={{maxWidth:400}}>
+      <Card sx={{maxWidth:400}} >
         <CardActionArea>
           <CardMedia component="img" height="80" alt="pic" image={ax} style={{height:250}}  ></CardMedia>
           <CardContent>
-            <Typography variant="body2">
+            <Typography variant="body2" sx={{direction:"rtl"}}>
               Lorem ipsum dolor sit amet, qui minim labore adipisicing minim
               sint cillum sint consectetur cupidatat.
             </Typography>
