@@ -7,36 +7,21 @@ import {
   Typography,
   createTheme,
 } from "@mui/material";
-import axios from "axios";
-// import pattern from "../../assets/pics/pattern.jpg";
 import ajaLogo from "../../assets/pics/ajalogoTransparent.png";
-import { json, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [token, setToken] = useState();
   const sendData = {
-    username: "user",
-    password: "user",
+    username: userName,
+    password: password,
   };
   // "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNjk4NjQ3NDY0LCJhdXRoIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjk4NTYxMDY0fQ.drJ-vqglz1KKfJSqJW85F81tSrvlFV6uMyrkEGHVkY1-dDPe0dfYM4AakkScxWK_SQc6PUXDe7N9XSHSeVR8zQ",
   console.log(token);
-
-  // axios({
-  //   url: "http://192.168.55.82:8080/api/authenticate",
-  //   method:"post",
-  //   data: {
-  //     username: userName,
-  //     password,
-  //   },
-  //   headers: {
-  //     "Content-Type": "text/plain",
-  //   },
-  // })
-  //   .then((res) => setToken(res))
-  //   .catch((error) => console.log(error));
   const fetchUser = async () => {
     await fetch("http://192.168.55.82:8080/api/authenticate", {
       method: "POST",
@@ -46,10 +31,9 @@ const Login = () => {
       body: JSON.stringify(sendData),
     })
       .then((res) => res.json())
-      .then((data) => console.log(data))
+      .then((data) => setToken(data))
       .catch((error) => console.log(error));
   };
-  const navigate = useNavigate();
   useEffect(() => {
     if (token) {
       const jwtData = jwtDecode(token);
