@@ -11,6 +11,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import ajaLogo from "../../assets/pics/ajalogoTransparent.png";
 import Headerbackground from "../../assets/pics/headerBackground.png";
+import {MdOutlineAssignment} from "react-icons/md"
 
 const Header = () => {
   // const { token, username } = useSelector((state) => state.auth);
@@ -80,6 +81,9 @@ const Header = () => {
                   alignItems: "center",
                 }}
               >
+                <Link to="/panel">
+                  <MdOutlineAssignment size="30px" color="rgba(0,0,0,0.5)" style={{marginInline:"15px",marginTop:"5px" }}/>
+                </Link>
                 <Avatar></Avatar>
                 <Typography variant="inherit" color="black">
                   {username1}
