@@ -29,22 +29,15 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableMethodSecurity(securedEnabled = true)
-public class SecurityConfiguration { // extends WebSecurityConfigurerAdapter {
+public class SecurityConfiguration {
     @Autowired
     UserDetailsServiceImpl userDetailsService;
-
-//  @Override
-//  public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-//    authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-//  }
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
-
         return authProvider;
     }
 
@@ -75,7 +68,6 @@ public class SecurityConfiguration { // extends WebSecurityConfigurerAdapter {
                                 )
                 )
                 .authorizeHttpRequests(authz ->
-                        // prettier-ignore
                         authz
                                 .requestMatchers(mvc.pattern("/index.html"), mvc.pattern("/*.js"), mvc.pattern("/*.map"), mvc.pattern("/*.css"), mvc.pattern("/assets/**")).permitAll()
                                 .requestMatchers(mvc.pattern("/*.ico"), mvc.pattern("/*.png"), mvc.pattern("/*.svg"), mvc.pattern("/*.webapp")).permitAll()
