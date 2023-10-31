@@ -15,12 +15,14 @@ const Login = () => {
   const navigate = useNavigate();
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [token, setToken] = useState();
+  const [token, setToken] = useState(
+    "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNjk4NjQ3NDY0LCJhdXRoIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjk4NTYxMDY0fQ.drJ-vqglz1KKfJSqJW85F81tSrvlFV6uMyrkEGHVkY1-dDPe0dfYM4AakkScxWK_SQc6PUXDe7N9XSHSeVR8zQ",
+
+  );
   const sendData = {
     username: userName,
     password: password,
   };
-  // "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNjk4NjQ3NDY0LCJhdXRoIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjk4NTYxMDY0fQ.drJ-vqglz1KKfJSqJW85F81tSrvlFV6uMyrkEGHVkY1-dDPe0dfYM4AakkScxWK_SQc6PUXDe7N9XSHSeVR8zQ",
   console.log(token);
   const fetchUser = async () => {
     await fetch("http://192.168.55.82:8080/api/authenticate", {
