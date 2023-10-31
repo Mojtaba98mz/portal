@@ -1,11 +1,7 @@
 package com.isiran.portal.config;
 
-import jakarta.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import org.springframework.web.cors.CorsConfiguration;
 
 @ConfigurationProperties(prefix = "portal", ignoreUnknownFields = false)
 public class PortalProperties {
@@ -13,11 +9,17 @@ public class PortalProperties {
 
     private final Security security = new Security();
 
+    private final CorsConfiguration cors = new CorsConfiguration();
+
     public Cache getCache() {
         return cache;
     }
 
     public Security getSecurity(){return security;}
+
+    public CorsConfiguration getCors() {
+        return cors;
+    }
 
     public static class Cache {
 

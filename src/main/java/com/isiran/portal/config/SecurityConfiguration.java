@@ -48,12 +48,6 @@ public class SecurityConfiguration { // extends WebSecurityConfigurerAdapter {
         return authProvider;
     }
 
-//  @Bean
-//  @Override
-//  public AuthenticationManager authenticationManagerBean() throws Exception {
-//    return super.authenticationManagerBean();
-//  }
-
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
@@ -67,7 +61,7 @@ public class SecurityConfiguration { // extends WebSecurityConfigurerAdapter {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
         http
-                .cors(cors->cors.disable())
+                .cors(withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .addFilterAfter(new SpaWebFilter(), BasicAuthenticationFilter.class)
                 .headers(headers ->
