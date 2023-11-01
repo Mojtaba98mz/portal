@@ -146,6 +146,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.github.ulisesbocchio</groupId>
+			<artifactId>jasypt-spring-boot-starter</artifactId>
+			<version>3.0.3</version>
+		</dependency>
 
 	</dependencies>
 
@@ -164,20 +169,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
-<!--		<pluginManagement>-->
-<!--			<plugins>-->
-<!--				<plugin>-->
-<!--					<groupId>com.github.eirslett</groupId>-->
-<!--					<artifactId>frontend-maven-plugin</artifactId>-->
-<!--					<version>${frontend-maven-plugin.version}</version>-->
-<!--					<configuration>-->
-<!--						<installDirectory>target</installDirectory>-->
-<!--						<nodeVersion>${node.version}</nodeVersion>-->
-<!--						<npmVersion>${npm.version}</npmVersion>-->
-<!--					</configuration>-->
-<!--				</plugin>-->
-<!--			</plugins>-->
-<!--		</pluginManagement>-->
 	</build>
 
 

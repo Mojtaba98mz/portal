@@ -4,9 +4,10 @@ spring:
   profiles:
     active: dev
   datasource:
-    url: jdbc:postgresql://localhost:5432/testdb1
-    username: postgres
-    password: changeme
+    #jdbc:postgresql://localhost:5432/testdb1
+    url: ENC(g8jJWIcr/xNnzv5bLgZNLGIt9f0M1Vc8r6QddLwADeKp8R3kY7Hwod9pA5RamVPK5InBXgKIYIY=)
+    username: ENC(QYdKBy2JNGZkoUSMEUUTOr0B64crAgDI)
+    password: ENC(GxtBo6OTIzitLJCIHdClc0Lh9IUUNndh)
 
   jpa:
     hibernate:
