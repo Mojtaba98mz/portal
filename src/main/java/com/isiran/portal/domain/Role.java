@@ -1,4 +1,4 @@
-package com.isiran.portal.models;
+package com.isiran.portal.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

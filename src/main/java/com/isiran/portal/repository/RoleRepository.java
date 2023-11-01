@@ -1,6 +1,6 @@
 package com.isiran.portal.repository;
 
-import com.isiran.portal.models.Role;
+import com.isiran.portal.domain.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

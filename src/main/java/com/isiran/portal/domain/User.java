@@ -1,4 +1,4 @@
-package com.isiran.portal.models;
+package com.isiran.portal.domain;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -9,7 +9,6 @@ import com.isiran.portal.config.Constants;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 

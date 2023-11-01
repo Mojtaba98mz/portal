@@ -2,7 +2,7 @@ package com.isiran.portal.repository;
 
 import java.util.Optional;
 
-import com.isiran.portal.models.User;
+import com.isiran.portal.domain.User;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
