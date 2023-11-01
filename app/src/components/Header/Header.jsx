@@ -12,25 +12,15 @@ import { Link, useNavigate } from "react-router-dom";
 import ajaLogo from "../../assets/pics/ajalogoTransparent.png";
 import Headerbackground from "../../assets/pics/headerBackground.png";
 import {MdOutlineAssignment} from "react-icons/md"
+import { localStorageToParse } from "../../utils/functions";
 
 const Header = () => {
-  // const { token, username } = useSelector((state) => state.auth);
   const navigate=useNavigate()
-  const userData = localStorage.getItem("userData");
-  const token = localStorage.getItem("Token");
-  let username1;
-  let token1;
-  if (userData) {
-    const { sub } = JSON.parse(userData);
-    username1 = sub;
-  }
-  if (token) {
-    const Token = JSON.parse(token);
-    token1 = Token;
-  }
+  const userData = localStorageToParse("userData")
+  const token=localStorageToParse("Token")
   
   const logout = () => {
-    if (username1 || token1) {
+    if (userData?.sub || token) {
       localStorage.removeItem("Token");
       localStorage.removeItem("userData");
       navigate("/")
@@ -51,7 +41,7 @@ const Header = () => {
       >
         <Container maxWidth="lg">
           <Toolbar>
-            {token1 || username1 ? (
+            {token || userData?.sub ? (
               <Button
                 variant="outlined"
                 color="error"
@@ -73,7 +63,7 @@ const Header = () => {
                 </Button>
               </Link>
             )}
-            {token1 && (
+            {token && (
               <Box
                 sx={{
                   display: "flex",
@@ -86,7 +76,7 @@ const Header = () => {
                 </Link>
                 <Avatar></Avatar>
                 <Typography variant="inherit" color="black">
-                  {username1}
+                  {userData?.sub}
                 </Typography>
               </Box>
             )}
