@@ -15,17 +15,15 @@ const Login = () => {
   const navigate = useNavigate();
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [token, setToken] = useState(
-    "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNjk4NjQ3NDY0LCJhdXRoIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjk4NTYxMDY0fQ.drJ-vqglz1KKfJSqJW85F81tSrvlFV6uMyrkEGHVkY1-dDPe0dfYM4AakkScxWK_SQc6PUXDe7N9XSHSeVR8zQ",
-
-  );
+  const [token, setToken] = useState();
+  // "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNjk4NjQ3NDY0LCJhdXRoIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjk4NTYxMDY0fQ.drJ-vqglz1KKfJSqJW85F81tSrvlFV6uMyrkEGHVkY1-dDPe0dfYM4AakkScxWK_SQc6PUXDe7N9XSHSeVR8zQ",
   const sendData = {
     username: userName,
     password: password,
   };
   console.log(token);
   const fetchUser = async () => {
-    await fetch("http://192.168.55.82:8080/api/authenticate", {
+    await fetch("http://192.168.55.82:8090/api/authenticate", {
       method: "POST",
       headers: {
         "Content-Type": "application/json", // 'Content-Type': 'application/x-www-form-urlencoded',
@@ -37,12 +35,12 @@ const Login = () => {
       .catch((error) => console.log(error));
   };
   useEffect(() => {
-    if (token) {
-      const jwtData = jwtDecode(token);
+    if (token?.id_token) {
+      const jwtData = jwtDecode(token.id_token);
       localStorage.setItem("userData", JSON.stringify(jwtData));
       localStorage.setItem("Token", JSON.stringify(token));
       console.log(jwtData);
-      navigate("/");
+      navigate("/panel/evaluations");
     }
   }, [token]);
   const theme = createTheme({

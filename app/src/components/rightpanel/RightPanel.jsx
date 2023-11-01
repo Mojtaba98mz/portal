@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import { MdOutlineAssignment } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 const RightPanel = () => {
   return (
@@ -27,7 +28,8 @@ const RightPanel = () => {
           لیست گزینش ها
         </ListSubheader>
         <Divider variant="middle" />
-        <ListItemButton>
+        <Link to="/panel/evaluations">
+        <ListItemButton >
           <ListItemIcon>
             <MdOutlineAssignment size="20px" />
             <ListItemText
@@ -42,7 +44,9 @@ const RightPanel = () => {
             ></ListItemText>
           </ListItemIcon>
         </ListItemButton>
+        </Link>
         <Divider variant="middle" />
+        <Link to="/panel/page2">
         <ListItemButton>
           <ListItemIcon>
             <MdOutlineAssignment size="20px" />
@@ -58,6 +62,7 @@ const RightPanel = () => {
             ></ListItemText>
           </ListItemIcon>
         </ListItemButton>
+        </Link>
         <Divider variant="middle" />
         <ListItemButton>
           <ListItemIcon>

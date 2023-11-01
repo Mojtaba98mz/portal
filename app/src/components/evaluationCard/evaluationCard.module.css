@@ -1,0 +1,22 @@
+.card {
+  width: 200px;
+  height: 350px;
+  box-shadow: 4px 4px 14px rgba(0, 0, 0, 0.4);
+  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  border-radius: 20px;
+  transition: all 100ms;
+  margin:30px 0px
+  /* transition: height 600ms; */
+}
+.card:hover {
+  border-top: 5px solid green;
+  border-bottom: 5px solid green;
+  /* border: 1px solid green; */
+  /* height: 380px; */
+
+  box-shadow: 4px 4px 14px rgba(0, 0, 0, 0.8);
+}
