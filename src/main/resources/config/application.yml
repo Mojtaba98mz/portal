@@ -1,3 +1,5 @@
+server:
+  port: 8090
 spring:
   profiles:
     active: dev
@@ -30,3 +32,13 @@ portal:
       jwt:
         base64-secret: MWM1ZmM3MTM1ZWUwYjNkOWRlMDI5YTRlZjk4MWFiOThmMzgxZjhkNDliZDI5YTMyYWVkMTJmY2ZlZDY2ZTVlN2UyNGZlNTVmZGFjZGMyYTAzN2YxNzViMzliYjhiNTYyYThmNTdiOTJmNGJjNjVkMDgyOWRiMjIxNWNlMTM1MTk=
         token-validity-in-seconds: 86400
+  cors:
+    # Allow Ionic for JHipster by default (* no longer allowed in Spring Boot 2.4+)
+    allowed-origins: 'http://localhost:5173,http://192.168.55.82:5173,http://192.168.55.176:5173,https://localhost:9000,http://localhost:9060,https://localhost:9060'
+    # Enable CORS when running in GitHub Codespaces
+    allowed-origin-patterns: 'https://*.githubpreview.dev'
+    allowed-methods: '*'
+    allowed-headers: '*'
+    exposed-headers: 'Authorization,Link,X-Total-Count,X-${jhipster.clientApp.name}-alert,X-${jhipster.clientApp.name}-error,X-${jhipster.clientApp.name}-params'
+    allow-credentials: true
+    max-age: 1800
