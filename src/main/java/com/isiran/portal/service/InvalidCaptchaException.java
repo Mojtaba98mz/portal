@@ -1,4 +1,4 @@
-package com.isiran.portal.service.exception;
+package com.isiran.portal.service;
 
 public class InvalidCaptchaException extends RuntimeException {
 

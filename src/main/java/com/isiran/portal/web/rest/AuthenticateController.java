@@ -1,7 +1,7 @@
 package com.isiran.portal.web.rest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.isiran.portal.service.exception.InvalidCaptchaException;
+import com.isiran.portal.service.InvalidCaptchaException;
 import com.isiran.portal.web.rest.vm.LoginVM;
 import jakarta.validation.Valid;
 import org.jasypt.encryption.StringEncryptor;
@@ -32,7 +32,6 @@ import java.util.stream.Collectors;
 import static com.isiran.portal.security.SecurityUtils.AUTHORITIES_KEY;
 import static com.isiran.portal.security.SecurityUtils.JWT_ALGORITHM;
 
-// @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api")
 public class AuthenticateController {
