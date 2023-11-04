@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Primary;
 public class JasyptEncryptorConfig {
 
     @Primary
-    @Bean
+    @Bean(name = "jasyptStringEncryptor")
     public StringEncryptor passwordEncryptor(){
         PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
         SimpleStringPBEConfig config = new SimpleStringPBEConfig();
