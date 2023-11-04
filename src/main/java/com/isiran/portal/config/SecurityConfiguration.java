@@ -75,6 +75,7 @@ public class SecurityConfiguration {
                                 .requestMatchers(mvc.pattern("/swagger-ui/**")).permitAll()
                                 .requestMatchers(mvc.pattern("/v3/api-docs/**")).permitAll()
                                 .requestMatchers(mvc.pattern("/swagger-ui.html")).permitAll()
+                                .requestMatchers(mvc.pattern("/api/captcha")).permitAll()
                                 .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/authenticate")).permitAll()
                                 .requestMatchers(mvc.pattern("/api/register")).permitAll()
                                 .requestMatchers(mvc.pattern("/api/admin/**")).hasAuthority(AuthoritiesConstants.ADMIN)
