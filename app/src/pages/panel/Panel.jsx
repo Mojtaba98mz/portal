@@ -8,6 +8,8 @@ import Page2 from "../../components/test/page2";
 import Login from "../login/Login";
 import { localStorageToParse } from "../../utils/functions";
 import TotalEvaluations from "./subPages/TotalEvaluations/TotalEvaluations";
+import DetailEvaluations from "./subPages/DetailsEvaluaionPage/DetailEvaluations";
+import PersonelEvaluationPage from "./subPages/personelEvaluationPage/personelEvaluationPage";
 const Panel = () => {
   const token=localStorageToParse("Token")
   console.log(token);
@@ -50,7 +52,9 @@ const Panel = () => {
                     }}
                   >
                     <Routes>
-                      <Route path="evaluations" element={<TotalEvaluations/>}></Route>
+                      <Route path="evaluations/" element={<TotalEvaluations/>}></Route>
+                      <Route path="evaluations/:id" element={<DetailEvaluations></DetailEvaluations>}></Route>
+                      <Route path="evaluations/:id/:id" element={<PersonelEvaluationPage></PersonelEvaluationPage>}></Route>
                       <Route path="page2" element={<Page2 />}></Route>
                     </Routes>
                   </div>
