@@ -1,7 +1,7 @@
 package com.isiran.portal.security;
 
-import com.isiran.portal.models.Role;
-import com.isiran.portal.models.User;
+import com.isiran.portal.domain.Role;
+import com.isiran.portal.domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

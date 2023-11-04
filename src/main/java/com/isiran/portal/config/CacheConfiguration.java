@@ -46,9 +46,9 @@ public class CacheConfiguration {
     public JCacheManagerCustomizer cacheManagerCustomizer() {
         return cm -> {
             createCache(cm, com.isiran.portal.repository.UserRepository.USERS_BY_USERNAME_CACHE);
-            createCache(cm, com.isiran.portal.models.User.class.getName());
-            createCache(cm, com.isiran.portal.models.Role.class.getName());
-            createCache(cm, com.isiran.portal.models.User.class.getName() + ".authorities");
+            createCache(cm, com.isiran.portal.domain.User.class.getName());
+            createCache(cm, com.isiran.portal.domain.Role.class.getName());
+            createCache(cm, com.isiran.portal.domain.User.class.getName() + ".authorities");
             // jhipster-needle-ehcache-add-entry
         };
     }

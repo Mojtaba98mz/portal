@@ -2,24 +2,7 @@ server:
   port: 8090
 spring:
   profiles:
-    active: dev
-  datasource:
-    url: jdbc:postgresql://localhost:5432/testdb1
-    username: postgres
-    password: changeme
-
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        cache:
-          use_second_level_cache: true
-          use_query_cache: false
-        generate_statistics: false
-        jdbc:
-          batch_size: 25
-    open-in-view: false
+    active: prod
 
 # App Properties
 portal:

@@ -1,4 +1,4 @@
-package com.isiran.portal.models;
+package com.isiran.portal.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
