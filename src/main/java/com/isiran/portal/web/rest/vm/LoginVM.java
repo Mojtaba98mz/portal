@@ -14,4 +14,8 @@ public class LoginVM {
     @NotNull
     @Size(min = 4, max = 100)
     private String password;
+
+    private String captchaAnswer;
+
+    private String encryptedCaptchaAnswer;
 }

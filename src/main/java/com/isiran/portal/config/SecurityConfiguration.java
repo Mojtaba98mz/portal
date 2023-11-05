@@ -17,9 +17,9 @@ import org.springframework.security.config.annotation.web.configurers.HeadersCon
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
@@ -32,6 +32,9 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfiguration {
     @Autowired
     UserDetailsServiceImpl userDetailsService;
+
+    @Autowired
+    JwtAuthEntryPoint jwtAuthEntryPoint;
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
@@ -75,6 +78,7 @@ public class SecurityConfiguration {
                                 .requestMatchers(mvc.pattern("/swagger-ui/**")).permitAll()
                                 .requestMatchers(mvc.pattern("/v3/api-docs/**")).permitAll()
                                 .requestMatchers(mvc.pattern("/swagger-ui.html")).permitAll()
+                                .requestMatchers(mvc.pattern("/api/captcha")).permitAll()
                                 .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/authenticate")).permitAll()
                                 .requestMatchers(mvc.pattern("/api/register")).permitAll()
                                 .requestMatchers(mvc.pattern("/api/admin/**")).hasAuthority(AuthoritiesConstants.ADMIN)
@@ -83,7 +87,7 @@ public class SecurityConfiguration {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(exceptions ->
                         exceptions
-                                .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
+                                .authenticationEntryPoint(jwtAuthEntryPoint)
                                 .accessDeniedHandler(new BearerTokenAccessDeniedHandler())
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
