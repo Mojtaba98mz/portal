@@ -9,10 +9,11 @@ const DetailEvaluations = () => {
   console.log(code);
   return (
     <div  className={styles.container}>
-      <PersonCard/>
-      <PersonCard/>
-      <PersonCard/>
-      <PersonCard/>
+      <PersonCard personalCode={"1234567"} totallScore={"0"} finalScore={"20"} organization={"فلان"} fullName={"امیر مقراضی"} role={"همتراز"} job={"مدیر"}/>
+      <PersonCard personalCode={"1234567"} totallScore={"0"} finalScore={"20"} organization={"فلان"} fullName={"امیر مقراضی"} role={"همتراز"} job={"مدیر"}/>
+      <PersonCard personalCode={"1234567"} totallScore={"0"} finalScore={"20"} organization={"فلان"} fullName={"امیر مقراضی"} role={"همتراز"} job={"مدیر"}/>
+      <PersonCard personalCode={"1234567"} totallScore={"0"} finalScore={"20"} organization={"فلان"} fullName={"امیر مقراضی"} role={"همتراز"} job={"مدیر"}/>
+      <PersonCard personalCode={"1234567"} totallScore={"0"} finalScore={"20"} organization={"فلان"} fullName={"امیر مقراضی"} role={"همتراز"} job={"مدیر"}/>
     </div>
   );
 };

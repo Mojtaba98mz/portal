@@ -8,40 +8,84 @@ import {
   createTheme,
 } from "@mui/material";
 import ajaLogo from "../../assets/pics/ajalogoTransparent.png";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import toast from "react-hot-toast";
+import axios from "axios";
+import {MdOutlineLockReset} from "react-icons/md"
+// import {captcha} from "../../assets/captcha"
 
 const Login = () => {
   const navigate = useNavigate();
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [token, setToken] = useState();
+  const [answerCaptcha, setAnswerCaptcha] = useState("");
+  const [captcha, setCaptcha] = useState("");
+  // console.log("answerCaptcha:", answerCaptcha);
+  // console.log("captcha:", captcha);
   // "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNjk4NjQ3NDY0LCJhdXRoIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjk4NTYxMDY0fQ.drJ-vqglz1KKfJSqJW85F81tSrvlFV6uMyrkEGHVkY1-dDPe0dfYM4AakkScxWK_SQc6PUXDe7N9XSHSeVR8zQ",
   const sendData = {
     username: userName,
     password: password,
+    captchaAnswer: answerCaptcha,
+    encryptedCaptchaAnswer:captcha.answer,
   };
-  console.log(token);
-  const fetchUser = async () => {
-    await fetch("http://192.168.55.82:8090/api/authenticate", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json", // 'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: JSON.stringify(sendData),
-    })
-      .then((res) => res.json())
-      .then((data) => setToken(data))
+  // console.log(token);
+  const getCapcha = async () => {
+    await axios
+      .get("http://192.168.55.82:8090/api/captcha")
+      .then((res) => {
+        setCaptcha(res.data);
+      })
       .catch((error) => console.log(error));
   };
+
+  const fetchUser = async () => {
+    // await fetch("http://192.168.55.82:8090/api/authenticate", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json", // 'Content-Type': 'application/x-www-form-urlencoded',
+    //   },
+    //   body: JSON.stringify(sendData),
+    // })
+    //   .then((res) => res.json())
+    //   .then((data) => setToken(data))
+    //   .catch((error) => console.log(error));
+    await axios.post("http://192.168.55.82:8090/api/authenticate",sendData)
+    .then((res)=>setToken(res.data))
+    .catch((error)=>{
+      console.log(error.response.data)
+    if(error?.response?.data=="invalid-credentials"){
+      toast.error("نام کاربری یا رمزعبور وجود ندارد یا اشتباه وارد شده است",{
+        duration: 4000,
+        style: { fontFamily: "Yekan", fontSize: "17px" },
+        })
+    }else if(error?.response?.data=="invalid-captcha"){
+        toast.error("کپچا اشتباه وارد شده است",{
+        duration: 4000,
+        style: { fontFamily: "Yekan", fontSize: "17px" },
+        })
+      }else{
+        console.log(error)
+      }
+    })
+  };
   useEffect(() => {
+    getCapcha();
     if (token?.id_token) {
       const jwtData = jwtDecode(token.id_token);
       localStorage.setItem("userData", JSON.stringify(jwtData));
       localStorage.setItem("Token", JSON.stringify(token));
       console.log(jwtData);
+      toast.success("ورود با موفقیت انجام شد", {
+        duration: 4000,
+        style: { fontFamily: "Yekan", fontSize: "17px" },
+      });
       navigate("/panel/evaluations");
     }
+    // console.log("res:",token?.response?.data)
+
   }, [token]);
   const theme = createTheme({
     typography: {
@@ -101,6 +145,22 @@ const Login = () => {
               style={{ marginTop: 20, width: "70%", fontFamily: "Yekan" }}
             ></TextField>
           </ThemeProvider>
+          <div className={styles.captchaContainer}>
+          <img
+            src={`data:image/jpeg;base64,${captcha.image}`}
+            width={"180px"}
+            className={styles.captcha}
+            alt="captchaPic"
+          />
+            <MdOutlineLockReset size="28" onClick={()=>{getCapcha()}} />
+          </div>
+          <input
+            onChange={(e) => {
+              setAnswerCaptcha(e.target.value);
+            }}
+            className={styles.answerCaptcha}
+          />
+
           <Button
             variant="contained"
             type="button"
