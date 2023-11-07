@@ -12,6 +12,7 @@ import { Link, useNavigate } from "react-router-dom";
 import ajaLogo from "../../assets/pics/ajalogoTransparent.png";
 import Headerbackground from "../../assets/pics/headerBackground.png";
 import {MdOutlineAssignment} from "react-icons/md"
+import {AiOutlineHome} from "react-icons/ai"
 import { localStorageToParse } from "../../utils/functions";
 
 const Header = () => {
@@ -49,7 +50,7 @@ const Header = () => {
                 type="button"
                 onClick={logout}
               >
-                loginout
+                خروج
               </Button>
             ) : (
               <Link to={"/login"}>
@@ -59,7 +60,7 @@ const Header = () => {
                   size="small"
                   type="button"
                 >
-                  login
+                  ورود
                 </Button>
               </Link>
             )}
@@ -69,10 +70,16 @@ const Header = () => {
                   display: "flex",
                   flexDirection: "row",
                   alignItems: "center",
+                  justifyContent:"space-around",
+                  width:"160px",
+                  // border:"1px solid black"
                 }}
               >
-                <Link to="/panel">
-                  <MdOutlineAssignment size="30px" color="rgba(0,0,0,0.5)" style={{marginInline:"15px",marginTop:"5px" }}/>
+                <Link to="/panel/evaluations">
+                  <MdOutlineAssignment size="25px" color="rgba(0,0,0,0.5)" style={{marginInline:"15px",marginTop:"5px" }}/>
+                </Link>
+                <Link to="/">
+                  <AiOutlineHome size="25px" color="rgba(0,0,0,0.5)" style={{margin:"2px 5px 2px 0px" }}></AiOutlineHome>
                 </Link>
                 <Avatar></Avatar>
                 <Typography variant="inherit" color="black">
@@ -88,7 +95,7 @@ const Header = () => {
                   alignItems: "center",
                 }}
               >
-                <Typography color="black" style={{ paddingRight: 20 }}>
+                <Typography color="black" style={{ paddingRight: 18,fontFamily:"YeKanBakhMedium" }}>
                   کانون مرکزی ارزیابی و رشد سرمایه های انسانی{" "}
                 </Typography>
                 <img

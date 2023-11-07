@@ -80,6 +80,7 @@ const RightPanel = () => {
           </ListItemIcon>
         </ListItemButton>
         <Divider variant="middle" />
+        <Link to="/panel/userManagement">
         <ListItemButton>
           <ListItemIcon>
             <MdOutlineAssignment size="20px" />
@@ -91,10 +92,11 @@ const RightPanel = () => {
                   marginRight: "20px",
                 },
               }}
-              primary="گزینش شماره 4"
+              primary="مدیریت کاربران"
             ></ListItemText>
           </ListItemIcon>
         </ListItemButton>
+        </Link>
         <Divider variant="middle" />
       </List>
     </div>

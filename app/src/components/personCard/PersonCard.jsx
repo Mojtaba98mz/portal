@@ -1,7 +1,8 @@
 import React from "react";
 import styles from "./personCard.module.css";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Button, Typography } from "@mui/material";
+import PropTypes from "prop-types"
 const PersonCard = ({
   fullName,
   personalCode,
@@ -18,32 +19,41 @@ const PersonCard = ({
     }
   }
   const param = useParams();
-  console.log(param);
+  const navigate=useNavigate()
+  // console.log(param);
   return (
     <div className={styles.container}>
       <div className={styles.cardText}>
-        <p>1234567890</p>
+        <p>{personalCode}</p>
         <p className={styles.header}>:شماره پرسنلی </p>
       </div>
       <p className={styles.header}>نام کارمند ارزیابی شونده</p>
-      <p >امیر مقراضی</p>
+      <p >{fullName}</p>
       <div div className={styles.cardText}>
-        <p>همتراز  </p>
+        <p>{role} </p>
         <p className={styles.header}> :نقش</p>
       </div>
-      <p className={styles.header}>جمع نمرات</p>
-      <p className={styles.header}>نمره نهایی</p>
-      <p className={styles.header}>شغل</p>
-      <p className={styles.header}>یگان</p>
-      <Link to={`/panel/evaluations/${param.id}/${personalCode}`}>
-        <Button variant="contained" color="primary" sx={hover}>
+      <p className={styles.header}>جمع نمرات:{totallScore}</p>
+      <p className={styles.header}>نمره نهایی:{finalScore}</p>
+      <p className={styles.header}>شغل:  {job}</p>
+      <p className={styles.header}>یگان:{organization}</p>
+        <Button variant="contained" color="primary" sx={hover} onClick={()=>navigate(`/panel/evaluations/${param.id}/${personalCode}`)}>
           <Typography variant="body1" fontFamily="YeKan">
             ارزیابی
           </Typography>
         </Button>
-      </Link>
     </div>
   );
 };
+
+PersonCard.propTypes={
+  fullName:PropTypes.string,
+  personalCode:PropTypes.string,
+  role:PropTypes.arrayOf(),
+  totallScore:PropTypes.string,
+  finalScore:PropTypes.string,
+  job:PropTypes.string,
+  organization:PropTypes.string,
+}
 
 export default PersonCard;

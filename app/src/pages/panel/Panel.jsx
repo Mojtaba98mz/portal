@@ -3,15 +3,11 @@ import styles from "./panel.module.css";
 import Header from "../../components/Header/Header";
 import { Box, Container, Grid } from "@mui/material";
 import RightPanel from "../../components/rightpanel/RightPanel";
-import { Route, Routes } from "react-router-dom";
-import Page2 from "../../components/test/page2";
 import Login from "../login/Login";
 import { localStorageToParse } from "../../utils/functions";
-import TotalEvaluations from "./subPages/TotalEvaluations/TotalEvaluations";
-import DetailEvaluations from "./subPages/DetailsEvaluaionPage/DetailEvaluations";
-import PersonelEvaluationPage from "./subPages/personelEvaluationPage/personelEvaluationPage";
+import PanelRoutes from "./PanelRoutes/PanelRoutes";
 const Panel = () => {
-  const token=localStorageToParse("Token")
+  const token = localStorageToParse("Token");
   console.log(token);
   return (
     <>
@@ -51,12 +47,7 @@ const Panel = () => {
                       flexWrap: "wrap",
                     }}
                   >
-                    <Routes>
-                      <Route path="evaluations/" element={<TotalEvaluations/>}></Route>
-                      <Route path="evaluations/:id" element={<DetailEvaluations></DetailEvaluations>}></Route>
-                      <Route path="evaluations/:id/:id" element={<PersonelEvaluationPage></PersonelEvaluationPage>}></Route>
-                      <Route path="page2" element={<Page2 />}></Route>
-                    </Routes>
+                    <PanelRoutes></PanelRoutes>
                   </div>
                 </Grid>
                 <Grid item xs={2} sx={{ width: "300px" }}>

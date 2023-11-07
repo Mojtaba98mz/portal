@@ -3,16 +3,22 @@
   height: 350px;
   /* border: 1px solid black; */
   box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.3);
-  transition: all 300px;
+  transition: all 200ms;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
   border-radius: 20px;
+  margin-top: 20px;
 }
 .cardText{
   display: flex;
 }
 .header{
   font-family: "YekanBakhHeavy";
+}
+.container:hover{
+  /* box-shadow: 0px 0px  15px #00FF00; */
+  transform: scale(1.02);
+  border: 1px solid green;
 }

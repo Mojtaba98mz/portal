@@ -5,15 +5,7 @@ import styles from "./TotalEvaluation.module.css"
 const TotalEvaluations = () => {
   return (
     <div className={styles.container}>
-      <EvaluationCard></EvaluationCard>
-      <EvaluationCard></EvaluationCard>
-      <EvaluationCard></EvaluationCard>
-      <EvaluationCard></EvaluationCard>
-      <EvaluationCard></EvaluationCard>
-      <EvaluationCard></EvaluationCard>
-      <EvaluationCard></EvaluationCard>
-      <EvaluationCard></EvaluationCard>
-      <EvaluationCard></EvaluationCard>
+      <EvaluationCard startDate={"1398/01/01"} endDate={"1390/01/01"}organization={"فلان یگان"} evaluationYear={"1398"} code={"dfcdef23"}></EvaluationCard>
     </div>
   );
 };
