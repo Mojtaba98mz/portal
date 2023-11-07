@@ -1,7 +1,7 @@
 /*
- * Copyright 2016-2023 the original author or authors from the JHipster project.
+ * Copyright 2016-2023 the original author or authors from the Portal project.
  *
- * This file is part of the JHipster project, see https://www.jhipster.tech/
+ * This file is part of the Portal project
  * for more information.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");

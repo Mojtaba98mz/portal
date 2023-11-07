@@ -26,4 +26,9 @@ public interface PortalDefaults {
         }
     }
 
+    interface ClientApp {
+
+        String name = "portalApp";
+    }
+
 }
