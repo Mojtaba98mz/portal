@@ -95,7 +95,7 @@ const Header = () => {
                   alignItems: "center",
                 }}
               >
-                <Typography color="black" style={{ paddingRight: 20 }}>
+                <Typography color="black" style={{ paddingRight: 18,fontFamily:"YeKanBakhMedium" }}>
                   کانون مرکزی ارزیابی و رشد سرمایه های انسانی{" "}
                 </Typography>
                 <img

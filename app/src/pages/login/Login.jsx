@@ -154,7 +154,7 @@ const Login = () => {
           />
             <MdOutlineLockReset size="28" onClick={()=>{getCapcha()}} />
           </div>
-          <input
+          <input 
             onChange={(e) => {
               setAnswerCaptcha(e.target.value);
             }}
