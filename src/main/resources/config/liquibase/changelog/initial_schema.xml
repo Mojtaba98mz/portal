@@ -14,7 +14,7 @@
         Portal core tables.
         The initial schema has the '00000000000001' id, so that it is over-written if we re-generate it.
     -->
-    <changeSet id="00000000000001" author="mojtaba">
+    <changeSet id="00000000000002" author="mojtaba">
         <createTable tableName="users">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
@@ -31,6 +31,7 @@
             <column name="created_date" type="timestamp"/>
             <column name="last_modified_by" type="varchar(50)"/>
             <column name="last_modified_date" type="timestamp"/>
+            <column name="activated" type="boolean"/>
         </createTable>
 
         <createTable tableName="roles">
