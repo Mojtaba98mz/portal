@@ -49,7 +49,6 @@ public class CacheConfiguration {
             createCache(cm, com.isiran.portal.domain.User.class.getName());
             createCache(cm, com.isiran.portal.domain.Role.class.getName());
             createCache(cm, com.isiran.portal.domain.User.class.getName() + ".authorities");
-            // jhipster-needle-ehcache-add-entry
         };
     }
 

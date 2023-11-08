@@ -2,7 +2,7 @@ package com.isiran.portal.config;
 
 public interface PortalConstants {
 
-    // Spring profiles for development, test and production, see https://www.jhipster.tech/profiles/
+    // Spring profiles for development, test and production
     /** Constant <code>SPRING_PROFILE_DEVELOPMENT="dev"</code> */
     String SPRING_PROFILE_DEVELOPMENT = "dev";
     /** Constant <code>SPRING_PROFILE_TEST="test"</code> */

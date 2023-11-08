@@ -11,6 +11,8 @@ public class PortalProperties {
 
     private final CorsConfiguration cors = new CorsConfiguration();
 
+    private final ClientApp clientApp = new ClientApp();
+
     public Cache getCache() {
         return cache;
     }
@@ -19,6 +21,10 @@ public class PortalProperties {
 
     public CorsConfiguration getCors() {
         return cors;
+    }
+
+    public ClientApp getClientApp() {
+        return clientApp;
     }
 
     public static class Cache {
@@ -126,4 +132,16 @@ public class PortalProperties {
         }
     }
 
+    public static class ClientApp {
+
+        private String name = PortalDefaults.ClientApp.name;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
 }
