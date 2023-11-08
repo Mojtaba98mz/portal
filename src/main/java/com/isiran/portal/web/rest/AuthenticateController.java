@@ -1,6 +1,7 @@
 package com.isiran.portal.web.rest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.isiran.portal.config.PortalConstants;
 import com.isiran.portal.service.InvalidCaptchaException;
 import com.isiran.portal.web.rest.vm.LoginVM;
 import jakarta.validation.Valid;
@@ -8,6 +9,8 @@ import org.jasypt.encryption.StringEncryptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,16 +50,21 @@ public class AuthenticateController {
 
     private final StringEncryptor encryptor;
 
-    public AuthenticateController(JwtEncoder jwtEncoder, AuthenticationManagerBuilder authenticationManagerBuilder, StringEncryptor encryptor) {
+    private final Environment env;
+
+    public AuthenticateController(JwtEncoder jwtEncoder, AuthenticationManagerBuilder authenticationManagerBuilder, StringEncryptor encryptor, Environment env) {
         this.jwtEncoder = jwtEncoder;
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.encryptor = encryptor;
+        this.env = env;
     }
 
     @PostMapping("/authenticate")
     public ResponseEntity<JWTToken> authorize(@Valid @RequestBody LoginVM loginVM) {
-        if (!encryptor.decrypt(loginVM.getEncryptedCaptchaAnswer()).equals(loginVM.getCaptchaAnswer())) {
-            throw new InvalidCaptchaException();
+        if (env.acceptsProfiles(Profiles.of(PortalConstants.SPRING_PROFILE_PRODUCTION))) {
+            if (!encryptor.decrypt(loginVM.getEncryptedCaptchaAnswer()).equals(loginVM.getCaptchaAnswer())) {
+                throw new InvalidCaptchaException();
+            }
         }
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 loginVM.getUsername(),
