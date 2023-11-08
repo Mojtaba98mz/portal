@@ -2,12 +2,10 @@ import * as React from "react";
 import styles from "./DataGrid.module.css"
 import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
 import { Box, Button, Divider, IconButton, Modal, TextField, Typography } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import SecurityIcon from "@mui/icons-material/Security";
-import FileCopyIcon from "@mui/icons-material/FileCopy";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import SaveIcon from '@mui/icons-material/Save';
 import { blueGrey,lightGreen } from '@mui/material/colors';
 import { useState } from "react";
 
@@ -31,26 +29,27 @@ export default function DataGridTable() {
     },
     {
       field: "firstName",
-      headerName: "First name",
+      headerName: "نام",
       width: 130,
       headerClassName: "themeHeader",
     },
     {
       field: "lastName",
-      headerName: "Last name",
+      headerName: "نام خانوادگی",
       width: 130,
       headerClassName: "themeHeader",
     },
     {
       field: "age",
-      headerName: "Age",
-      type: "number",
+      headerName: "وضعیت",
+      type: "boolean",
+      editable:true,
       width: 90,
       headerClassName: "themeHeader",
     },
     {
       field: "fullName",
-      headerName: "Full name",
+      headerName: "نام کامل",
       description: "This column has a value getter and is not sortable.",
       sortable: false,
       width: 160,
@@ -60,15 +59,19 @@ export default function DataGridTable() {
     },
     {
       field: "action",
-      headerName: "Action",
+      headerName: "بیشتر",
       headerAlign: "center",
       sortable: false,
-      width: 120,
+      width: 140,
       headerClassName: "themeHeader",
       renderCell: ({ row }) => (
         <div>
           <IconButton onClick={() => console.log(row)}>
             <DeleteForeverIcon />
+          </IconButton>
+
+          <IconButton onClick={() => console.log(row)}>
+            <SaveIcon />
           </IconButton>
           <IconButton onClick={() => handleOpen(row)}>
             <EditIcon />
@@ -79,15 +82,15 @@ export default function DataGridTable() {
   ];
 
   const rows = [
-    { id: 1, lastName: "Snow", firstName: "Jon", age: 35 },
-    { id: 2, lastName: "Lannister", firstName: "Cersei", age: 42 },
-    { id: 3, lastName: "Lannister", firstName: "Jaime", age: 45 },
-    { id: 4, lastName: "Stark", firstName: "Arya", age: 16 },
+    { id: 1, lastName: "Snow", firstName: "Jon", age: true },
+    { id: 2, lastName: "Lannister", firstName: "Cersei", age: false },
+    { id: 3, lastName: "Lannister", firstName: "Jaime", age: false },
+    { id: 4, lastName: "Stark", firstName: "Arya", age:false },
     { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
-    { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
-    { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-    { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-    { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
+    { id: 6, lastName: "Melisandre", firstName: null, age: true },
+    { id: 7, lastName: "Clifford", firstName: "Ferrara", age: true },
+    { id: 8, lastName: "Frances", firstName: "Rossini", age: false },
+    { id: 9, lastName: "Roxie", firstName: "Harvey", age: true },
   ];
 
   return (
