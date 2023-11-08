@@ -2,6 +2,7 @@ package com.isiran.portal.web.rest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.isiran.portal.config.PortalConstants;
+import com.isiran.portal.config.PortalProperties;
 import com.isiran.portal.service.InvalidCaptchaException;
 import com.isiran.portal.web.rest.vm.LoginVM;
 import jakarta.validation.Valid;
@@ -19,6 +20,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwsHeader;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
@@ -52,19 +54,23 @@ public class AuthenticateController {
 
     private final Environment env;
 
-    public AuthenticateController(JwtEncoder jwtEncoder, AuthenticationManagerBuilder authenticationManagerBuilder, StringEncryptor encryptor, Environment env) {
+    private final PasswordEncoder passwordEncoder;
+    private final PortalProperties portalProperties;
+
+    public AuthenticateController(JwtEncoder jwtEncoder, AuthenticationManagerBuilder authenticationManagerBuilder, StringEncryptor encryptor, Environment env, PasswordEncoder passwordEncoder, PortalProperties portalProperties) {
         this.jwtEncoder = jwtEncoder;
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.encryptor = encryptor;
         this.env = env;
+        this.passwordEncoder = passwordEncoder;
+        this.portalProperties = portalProperties;
     }
 
     @PostMapping("/authenticate")
     public ResponseEntity<JWTToken> authorize(@Valid @RequestBody LoginVM loginVM) {
         if (env.acceptsProfiles(Profiles.of(PortalConstants.SPRING_PROFILE_PRODUCTION))) {
-            if (!encryptor.decrypt(loginVM.getEncryptedCaptchaAnswer()).equals(loginVM.getCaptchaAnswer())) {
+            if (!passwordEncoder.matches(portalProperties.getCaptchaSalt() + loginVM.getCaptchaAnswer(), loginVM.getEncryptedCaptchaAnswer()))
                 throw new InvalidCaptchaException();
-            }
         }
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 loginVM.getUsername(),

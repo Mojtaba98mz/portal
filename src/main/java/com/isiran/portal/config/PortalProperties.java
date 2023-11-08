@@ -13,6 +13,16 @@ public class PortalProperties {
 
     private final ClientApp clientApp = new ClientApp();
 
+    private String captchaSalt;
+
+    public String getCaptchaSalt() {
+        return captchaSalt;
+    }
+
+    public void setCaptchaSalt(String captchaSalt) {
+        this.captchaSalt = captchaSalt;
+    }
+
     public Cache getCache() {
         return cache;
     }
@@ -144,4 +154,5 @@ public class PortalProperties {
             this.name = name;
         }
     }
+
 }
