@@ -34,7 +34,7 @@ const Login = () => {
   // console.log(token);
   const getCapcha = async () => {
     await axios
-      .get("http://192.168.55.82:8090/api/captcha")
+      .get("/captcha")
       .then((res) => {
         setCaptcha(res.data);
       })
@@ -52,7 +52,7 @@ const Login = () => {
     //   .then((res) => res.json())
     //   .then((data) => setToken(data))
     //   .catch((error) => console.log(error));
-    await axios.post("http://192.168.55.82:8090/api/authenticate",sendData)
+    await axios.post("/authenticate",sendData)
     .then((res)=>setToken(res.data))
     .catch((error)=>{
       console.log(error.response.data)

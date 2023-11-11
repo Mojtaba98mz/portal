@@ -1,23 +1,58 @@
 import * as React from "react";
-import styles from "./DataGrid.module.css"
-import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
-import { Box, Button, Divider, IconButton, Modal, TextField, Typography } from "@mui/material";
+import styles from "./DataGrid.module.css";
+import { DataGrid } from "@mui/x-data-grid";
+import {
+  Box,
+  Button,
+  Divider,
+  IconButton,
+  Modal,
+  TextField,
+  Typography,
+} from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import SaveIcon from '@mui/icons-material/Save';
-import { blueGrey,lightGreen } from '@mui/material/colors';
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import SaveIcon from "@mui/icons-material/Save";
+import { blueGrey, lightGreen } from "@mui/material/colors";
 import { useState } from "react";
-
+import axios from "axios";
 export default function DataGridTable() {
   const [open, setOpen] = useState(false);
+  const [usersData, setUsersData] = useState()
   const handleClose = () => {
     setOpen(false);
   };
   const handleOpen = (row) => {
     setOpen(true);
-    console.log(row)
+    console.log(row);
   };
+
+  const getUserData = () => {
+    axios.get("/admin/users")
+      .then(res => setUsersData(res.data.content))
+      .catch(error => console.log(error))
+  }
+  
+  let rows=[]
+  usersData? rows=usersData:[] 
+  console.log(usersData)
+  React.useEffect(() => {
+    getUserData()
+
+  }, [])
+
+  // {
+  // createdBy: "system",
+  // createdDate: null,
+  // firstName: "Administrator"
+  // id: 1
+  // lastModifiedBy: "system"
+  // lastModifiedDate: null
+  // lastName: "Administrator"
+  // username: "admin"
+  //   }
+  //
   const columns = [
     {
       field: "id",
@@ -40,22 +75,34 @@ export default function DataGridTable() {
       headerClassName: "themeHeader",
     },
     {
-      field: "age",
+      field: "activated",
       headerName: "وضعیت",
       type: "boolean",
-      editable:true,
+      editable: true,
       width: 90,
       headerClassName: "themeHeader",
     },
     {
-      field: "fullName",
-      headerName: "نام کامل",
+      field: "username",
+      headerName: "نام کاربری",
       description: "This column has a value getter and is not sortable.",
       sortable: false,
-      width: 160,
+      width: 100,
       headerClassName: "themeHeader",
-      valueGetter: (params) =>
-        `${params.row.firstName || ""} ${params.row.lastName || ""}`,
+      // valueGetter: (params) =>
+      //   `${params.row.firstName || ""} ${params.row.lastName || ""}`,
+    },
+    {
+      field: "lastModifiedDate",
+      headerName: "تاریخ ویرایش",
+      description: "This column has a value getter and is not sortable.",
+      headerAlign:"center",
+      type: "Date",
+      sortable: true,
+      width: 180,
+      headerClassName: "themeHeader",
+      // valueGetter: (params) =>
+      //   `${params.row.firstName || ""} ${params.row.lastName || ""}`,
     },
     {
       field: "action",
@@ -81,40 +128,41 @@ export default function DataGridTable() {
     },
   ];
 
-  const rows = [
-    { id: 1, lastName: "Snow", firstName: "Jon", age: true },
-    { id: 2, lastName: "Lannister", firstName: "Cersei", age: false },
-    { id: 3, lastName: "Lannister", firstName: "Jaime", age: false },
-    { id: 4, lastName: "Stark", firstName: "Arya", age:false },
-    { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
-    { id: 6, lastName: "Melisandre", firstName: null, age: true },
-    { id: 7, lastName: "Clifford", firstName: "Ferrara", age: true },
-    { id: 8, lastName: "Frances", firstName: "Rossini", age: false },
-    { id: 9, lastName: "Roxie", firstName: "Harvey", age: true },
-  ];
 
   return (
     <>
       <Modal
-        open={open}
         onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        open={open}
+      // aria-labelledby="modal-modal-title"
+      // aria-describedby="modal-modal-description"
       >
-        <div
-          className={styles.modalContainer}
-        >
+        <div className={styles.modalContainer}>
           <div className={styles.modalCard}>
             <Box>
-            <HighlightOffIcon sx={{cursor:"pointer"}} onClick={handleClose} className={styles.cancelButton}/>
-              <Divider variant="middle"></Divider>
+              <HighlightOffIcon
+                sx={{ cursor: "pointer" }}
+                onClick={handleClose}
+                className={styles.cancelButton}
+              />
             </Box>
+            <h3 style={{ fontFamily: "Yekan" }}> تغییر رمزعبور</h3>
             <div className={styles.content}>
-              <TextField variant="standard" label="password"></TextField>
-              <Button variant="contained" size="large" color="success" sx={{marginTop:"50px",width:"100%",background:lightGreen[400]}}><Typography variant="body1"> ذخیره</Typography></Button>
+              <TextField variant="standard" label="رمزعبور جدید"></TextField>
+              <Button
+                variant="contained"
+                size="large"
+                color="success"
+                sx={{
+                  marginTop: "50px",
+                  width: "100%",
+                  background: lightGreen[400],
+                }}
+              >
+                <Typography variant="body1"> ذخیره</Typography>
+              </Button>
             </div>
           </div>
-
         </div>
       </Modal>
       <Box
@@ -136,7 +184,7 @@ export default function DataGridTable() {
             },
           }}
           pageSizeOptions={[5, 10]}
-          // checkboxSelection
+        // checkboxSelection
         />
       </Box>
     </>
