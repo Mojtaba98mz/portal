@@ -16,4 +16,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
   @EntityGraph(attributePaths = "authorities")
   @Cacheable(cacheNames = USERS_BY_USERNAME_CACHE)
   Optional<User> findOneWithAuthoritiesByUsername(String username);
+
+  Optional<User> findOneByUsername(String username);
 }

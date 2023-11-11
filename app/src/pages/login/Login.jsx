@@ -56,7 +56,7 @@ const Login = () => {
     .then((res)=>setToken(res.data))
     .catch((error)=>{
       console.log(error.response.data)
-    if(error?.response?.data=="invalid-credentials"){
+    if(error?.response?.data=="Bad credentials"){
       toast.error("نام کاربری یا رمزعبور وجود ندارد یا اشتباه وارد شده است",{
         duration: 4000,
         style: { fontFamily: "Yekan", fontSize: "17px" },
