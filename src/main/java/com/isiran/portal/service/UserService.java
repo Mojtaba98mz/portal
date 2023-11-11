@@ -43,10 +43,10 @@ public class UserService {
     private final CacheManager cacheManager;
 
     public UserService(
-        UserRepository userRepository,
-        PasswordEncoder passwordEncoder,
-        RoleRepository roleRepository,
-        CacheManager cacheManager
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder,
+            RoleRepository roleRepository,
+            CacheManager cacheManager
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -120,12 +120,12 @@ public class UserService {
         user.setActivated(true);
         if (userVM.getAuthorities() != null) {
             Set<Role> authorities = userVM
-                .getAuthorities()
-                .stream()
-                .map(roleRepository::findByName)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .collect(Collectors.toSet());
+                    .getAuthorities()
+                    .stream()
+                    .map(roleRepository::findByName)
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .collect(Collectors.toSet());
             user.setAuthorities(authorities);
         }
         user.setCreatedBy("system");
@@ -137,32 +137,34 @@ public class UserService {
         return user;
     }
 
-    public Optional<AdminUserDTO> updateUser(AdminUserDTO userDTO) {
+    public Optional<AdminUserDTO> updateUser(ManagedUserVM userDTO) {
         return Optional
-            .of(userRepository.findById(userDTO.getId()))
-            .filter(Optional::isPresent)
-            .map(Optional::get)
-            .map(user -> {
-                this.clearUserCaches(user);
-                user.setUsername(userDTO.getUsername().toLowerCase());
-                user.setFirstName(userDTO.getFirstName());
-                user.setLastName(userDTO.getLastName());
-                user.setActivated(userDTO.isActivated());
-                Set<Role> managedAuthorities = user.getAuthorities();
-                managedAuthorities.clear();
-                userDTO
-                    .getAuthorities()
-                    .stream()
-                    .map(roleRepository::findByName)
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
-                    .forEach(managedAuthorities::add);
-                userRepository.save(user);
-                this.clearUserCaches(user);
-                log.debug("Changed Information for User: {}", user);
-                return user;
-            })
-            .map(AdminUserDTO::new);
+                .of(userRepository.findById(userDTO.getId()))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(user -> {
+                    this.clearUserCaches(user);
+                    user.setUsername(userDTO.getUsername().toLowerCase());
+                    user.setFirstName(userDTO.getFirstName());
+                    user.setLastName(userDTO.getLastName());
+                    user.setActivated(userDTO.isActivated());
+                    Set<Role> managedAuthorities = user.getAuthorities();
+                    if (userDTO.getPassword() != null)
+                        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+                    managedAuthorities.clear();
+                    userDTO
+                            .getAuthorities()
+                            .stream()
+                            .map(roleRepository::findByName)
+                            .filter(Optional::isPresent)
+                            .map(Optional::get)
+                            .forEach(managedAuthorities::add);
+                    userRepository.save(user);
+                    this.clearUserCaches(user);
+                    log.debug("Changed Information for User: {}", user);
+                    return user;
+                })
+                .map(AdminUserDTO::new);
     }
 
     @Transactional(readOnly = true)
@@ -254,13 +256,13 @@ public class UserService {
 
     /**
      * Gets a list of all the authorities.
+     *
      * @return a list of all the authorities.
      */
     /*@Transactional(readOnly = true)
     public List<String> getAuthorities() {
         return authorityRepository.findAll().stream().map(Authority::getName).toList();
     }*/
-
     private void clearUserCaches(User user) {
         Objects.requireNonNull(cacheManager.getCache(UserRepository.USERS_BY_USERNAME_CACHE)).evict(user.getUsername());
     }
