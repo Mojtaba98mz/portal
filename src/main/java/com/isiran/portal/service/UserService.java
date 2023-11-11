@@ -137,28 +137,23 @@ public class UserService {
         return user;
     }
 
-    /*public Optional<AdminUserDTO> updateUser(AdminUserDTO userDTO) {
+    public Optional<AdminUserDTO> updateUser(AdminUserDTO userDTO) {
         return Optional
             .of(userRepository.findById(userDTO.getId()))
             .filter(Optional::isPresent)
             .map(Optional::get)
             .map(user -> {
                 this.clearUserCaches(user);
-                user.setLogin(userDTO.getLogin().toLowerCase());
+                user.setUsername(userDTO.getUsername().toLowerCase());
                 user.setFirstName(userDTO.getFirstName());
                 user.setLastName(userDTO.getLastName());
-                if (userDTO.getEmail() != null) {
-                    user.setEmail(userDTO.getEmail().toLowerCase());
-                }
-                user.setImageUrl(userDTO.getImageUrl());
                 user.setActivated(userDTO.isActivated());
-                user.setLangKey(userDTO.getLangKey());
-                Set<Authority> managedAuthorities = user.getAuthorities();
+                Set<Role> managedAuthorities = user.getAuthorities();
                 managedAuthorities.clear();
                 userDTO
                     .getAuthorities()
                     .stream()
-                    .map(authorityRepository::findById)
+                    .map(roleRepository::findByName)
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .forEach(managedAuthorities::add);
@@ -168,7 +163,12 @@ public class UserService {
                 return user;
             })
             .map(AdminUserDTO::new);
-    }*/
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<User> getUserWithAuthoritiesByLogin(String username) {
+        return userRepository.findOneWithAuthoritiesByUsername(username);
+    }
 
     /*public void deleteUser(String login) {
         userRepository

@@ -2,6 +2,7 @@ package com.isiran.portal.security;
 
 import com.isiran.portal.domain.Role;
 import com.isiran.portal.domain.User;
+import com.isiran.portal.web.rest.errors.ErrorConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,6 +20,7 @@ import java.util.List;
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final Logger log = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
     private final UserRepository userRepository;
+
     public UserDetailsServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -36,9 +38,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     private org.springframework.security.core.userdetails.User createSpringSecurityUser(String lowercaseLogin, User user) {
-    /*if (!user.isActivated()) {
-      throw new UserNotActivatedException("User " + lowercaseLogin + " was not activated");
-    }*/
+        if (!user.getActivated()) {
+            throw new UserNotActivatedException(ErrorConstants.NOT_ACTIVATED);
+        }
         List<SimpleGrantedAuthority> grantedAuthorities = user
                 .getAuthorities()
                 .stream()

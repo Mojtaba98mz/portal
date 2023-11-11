@@ -1,5 +1,6 @@
 package com.isiran.portal.web.rest;
 
+import com.isiran.portal.config.Constants;
 import com.isiran.portal.domain.User;
 import com.isiran.portal.repository.UserRepository;
 import com.isiran.portal.security.AuthoritiesConstants;
@@ -10,6 +11,7 @@ import com.isiran.portal.web.rest.errors.BadRequestAlertException;
 import com.isiran.portal.web.rest.errors.LoginAlreadyUsedException;
 import com.isiran.portal.web.rest.vm.ManagedUserVM;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -20,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -27,7 +30,7 @@ import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
+import java.util.Optional;
 
 
 @RestController
@@ -91,30 +94,26 @@ public class UserResource {
         return pageable.getSort().stream().map(Sort.Order::getProperty).allMatch(ALLOWED_ORDERED_PROPERTIES::contains);
     }
 
-    /**
-     * {@code GET /admin/users/:login} : get the "login" user.
-     *
-     * @param login the login of the user to find.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the "login" user, or with status {@code 404 (Not Found)}.
-     */
-   /* @GetMapping("/users/{login}")
+    @PutMapping("/users")
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
-    public ResponseEntity<AdminUserDTO> getUser(@PathVariable @Pattern(regexp = Constants.LOGIN_REGEX) String login) {
-        log.debug("REST request to get User : {}", login);
-        return ResponseUtil.wrapOrNotFound(userService.getUserWithAuthoritiesByLogin(login).map(AdminUserDTO::new));
-    }*/
+    public ResponseEntity<AdminUserDTO> updateUser(@Valid @RequestBody AdminUserDTO userDTO) {
+        log.debug("REST request to update User : {}", userDTO);
+        Optional<User> existingUser = userRepository.findOneByUsername(userDTO.getUsername());
+        if (existingUser.isPresent() && (!existingUser.orElseThrow().getId().equals(userDTO.getId()))) {
+            throw new LoginAlreadyUsedException();
+        }
+        Optional<AdminUserDTO> updatedUser = userService.updateUser(userDTO);
+        return updatedUser.map(response -> ResponseEntity.ok().body(response))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
 
-    /**
-     * {@code DELETE /admin/users/:login} : delete the "login" User.
-     *
-     * @param login the login of the user to delete.
-     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
-     */
-//    @DeleteMapping("/users/{login}")
-//    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
-//    public ResponseEntity<Void> deleteUser(@PathVariable @Pattern(regexp = Constants.LOGIN_REGEX) String login) {
-//        log.debug("REST request to delete User: {}", login);
-//        userService.deleteUser(login);
-//        return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName, "userManagement.deleted", login)).build();
-//    }
+    @GetMapping("/users/{username}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    public ResponseEntity<AdminUserDTO> getUser(@PathVariable @Pattern(regexp = Constants.LOGIN_REGEX) String username) {
+        log.debug("REST request to get User : {}", username);
+        return userService.getUserWithAuthoritiesByLogin(username).map(AdminUserDTO::new)
+                .map(response -> ResponseEntity.ok().body(response))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
 }

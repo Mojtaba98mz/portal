@@ -22,6 +22,6 @@ public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setHeader("Content-Type", "text/plain;charset=UTF-8");
-        response.getOutputStream().print(ErrorConstants.INVALID_CREDENTIALS);
+        response.getOutputStream().print(e.getMessage());
     }
 }
