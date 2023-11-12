@@ -3,6 +3,7 @@ package com.isiran.portal.web.rest;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.isiran.portal.config.PortalConstants;
 import com.isiran.portal.config.PortalProperties;
+import com.isiran.portal.security.dto.JWTToken;
 import com.isiran.portal.service.InvalidCaptchaException;
 import com.isiran.portal.web.rest.vm.LoginVM;
 import jakarta.validation.Valid;
@@ -102,25 +103,6 @@ public class AuthenticateController {
 
     JwsHeader jwsHeader = JwsHeader.with(JWT_ALGORITHM).build();
     return this.jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, claims)).getTokenValue();
-  }
-
-
-  static class JWTToken {
-
-    private String idToken;
-
-    JWTToken(String idToken) {
-      this.idToken = idToken;
-    }
-
-    @JsonProperty("id_token")
-    String getIdToken() {
-      return idToken;
-    }
-
-    void setIdToken(String idToken) {
-      this.idToken = idToken;
-    }
   }
 
 }

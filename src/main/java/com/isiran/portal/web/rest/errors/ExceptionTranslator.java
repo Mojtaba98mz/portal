@@ -21,4 +21,10 @@ public class ExceptionTranslator extends ResponseEntityExceptionHandler {
                 new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
+    @ExceptionHandler(value = com.isiran.portal.service.InvalidNationalCodeException.class)
+    public ResponseEntity<Object> handleNationalCodeException(com.isiran.portal.service.InvalidNationalCodeException ex, NativeWebRequest request) {
+        return handleExceptionInternal(ex, ErrorConstants.INVALID_NATIONAL_CODE,
+                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
 }

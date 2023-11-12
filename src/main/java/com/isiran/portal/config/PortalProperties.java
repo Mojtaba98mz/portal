@@ -13,6 +13,8 @@ public class PortalProperties {
 
     private final ClientApp clientApp = new ClientApp();
 
+    private final Rayten rayten = new Rayten();
+
     private String captchaSalt;
 
     public String getCaptchaSalt() {
@@ -27,7 +29,9 @@ public class PortalProperties {
         return cache;
     }
 
-    public Security getSecurity(){return security;}
+    public Security getSecurity() {
+        return security;
+    }
 
     public CorsConfiguration getCors() {
         return cors;
@@ -35,6 +39,10 @@ public class PortalProperties {
 
     public ClientApp getClientApp() {
         return clientApp;
+    }
+
+    public Rayten getRayten() {
+        return rayten;
     }
 
     public static class Cache {
@@ -75,6 +83,7 @@ public class PortalProperties {
         private String contentSecurityPolicy = PortalDefaults.Security.contentSecurityPolicy;
 
         private final Authentication authentication = new Authentication();
+
         public Authentication getAuthentication() {
             return authentication;
         }
@@ -152,6 +161,36 @@ public class PortalProperties {
 
         public void setName(String name) {
             this.name = name;
+        }
+    }
+
+    public static class Rayten {
+        private String username = PortalDefaults.Rayten.username;
+        private String password = PortalDefaults.Rayten.password;
+        private String baseUrl = PortalDefaults.Rayten.baseUrl;
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
+        public String getBaseUrl() {
+            return baseUrl;
+        }
+
+        public void setBaseUrl(String baseUrl) {
+            this.baseUrl = baseUrl;
         }
     }
 

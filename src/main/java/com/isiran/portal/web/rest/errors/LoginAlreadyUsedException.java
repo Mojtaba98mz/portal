@@ -10,6 +10,6 @@ public class LoginAlreadyUsedException extends ErrorResponseException {
     private static final long serialVersionUID = 1L;
 
     public LoginAlreadyUsedException() {
-        super(HttpStatus.BAD_REQUEST, ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,"Incorrect captcha"),null);
+        super(HttpStatus.BAD_REQUEST, ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,ErrorConstants.LOGIN_ALREADY_USED_TYPE),null);
     }
 }
