@@ -4,8 +4,10 @@ import com.isiran.portal.domain.Role;
 import com.isiran.portal.domain.User;
 import com.isiran.portal.repository.RoleRepository;
 import com.isiran.portal.repository.UserRepository;
+import com.isiran.portal.security.AuthoritiesConstants;
 import com.isiran.portal.security.SecurityUtils;
 import com.isiran.portal.security.dto.AdminUserDTO;
+import com.isiran.portal.util.ValidationUtil;
 import com.isiran.portal.web.rest.vm.ManagedUserVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,10 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -111,6 +110,9 @@ public class UserService {
     }*/
 
     public User createUser(ManagedUserVM userVM) {
+        if (!ValidationUtil.validateMelliCode(userVM.getUsername())){
+            throw new InvalidNationalCodeException();
+        }
         User user = new User();
         user.setUsername(userVM.getUsername().toLowerCase());
         user.setFirstName(userVM.getFirstName());
@@ -118,6 +120,9 @@ public class UserService {
         String encryptedPassword = passwordEncoder.encode(userVM.getPassword());
         user.setPassword(encryptedPassword);
         user.setActivated(true);
+        Set<String> defaultAuthorities = new HashSet<>();
+        defaultAuthorities.add(AuthoritiesConstants.USER);
+        userVM.setAuthorities(defaultAuthorities);
         if (userVM.getAuthorities() != null) {
             Set<Role> authorities = userVM
                     .getAuthorities()

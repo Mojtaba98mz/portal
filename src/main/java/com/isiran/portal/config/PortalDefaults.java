@@ -27,8 +27,13 @@ public interface PortalDefaults {
     }
 
     interface ClientApp {
-
         String name = "portalApp";
+    }
+
+    interface Rayten {
+        String username = "admin";
+        String password = "admin";
+        String baseUrl = "http://localhost:8080/api/authenticate";
     }
 
 }

@@ -7,6 +7,6 @@ import org.springframework.web.ErrorResponseException;
 public class BadRequestAlertException extends ErrorResponseException {
 
     public BadRequestAlertException() {
-        super(HttpStatus.BAD_REQUEST, ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,"Incorrect captcha"),null);
+        super(HttpStatus.BAD_REQUEST, ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,"bad-request"),null);
     }
 }
