@@ -1,33 +1,79 @@
-import React, { useState } from 'react'
-import { Box, Button, IconButton, Modal, TextField, Typography } from '@mui/material';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import React, { useEffect, useState } from "react";
+import {
+  Box,
+  Button,
+  IconButton,
+  Modal,
+  TextField,
+  Typography,
+} from "@mui/material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import { grey } from "@mui/material/colors";
-import axios from 'axios';
-import toast from 'react-hot-toast';
+import axios from "axios";
+import toast from "react-hot-toast";
 
-const AddUser = ({showModal,setShowModal }) => {
-
+const AddUser = ({ showModal, setShowModal }) => {
   const [nationalCode, setNationalCode] = useState();
   const [password, setPassword] = useState();
-  const [showPassword,setShowPassword]=useState(false)
+  const [showPassword, setShowPassword] = useState(false);
+  const [firstName, setFirstName] = useState();
+  const [lastName, setLastName] = useState();
+  const [addedUser, setAddedUser] = useState("");
+  const [errors, setErrors] = useState("")
+  // {
+  //   username: "123456",
+  //   firstName: "moshtaba",
+  //   lastName: "zamandi",
+  //   activated: true,
+  //   password: "123456"
+  // }
 
-  const postData={
-    nationalCode,
-    password
+  const postUserData = {
+    username: nationalCode,
+    firstName: firstName,
+    lastName: lastName,
+    activated: true,
+    password: password,
+  };
+
+  const closeModalHandler = () => {
+    setShowModal(false);
+    setAddedUser("")
+    setErrors("")
+  };
+  const addUserHandler = () => {
+    axios
+      .post("/admin/users", postUserData)
+      .then((res) => setAddedUser(res))
+      .catch((error) => setErrors(error));
+    // console.log("added user", addedUser);
+    // console.log("data send:", postUserData)
+  };
+  useEffect(() => {
+
+    notif()
+
+  }, [addedUser, errors])
+
+  const notif = () => {
+    if (addedUser?.data?.username) {
+      toast.success(`کاربر ${addedUser.data.username}با موفقست ساخته شد`);
+    }
+    else if (errors?.response?.data?.detail == "login-already-used") {
+      toast.error("یوزر مورد نظر قبلا ساخته شده است");
+    }
+    else if (errors?.response?.data == "invalid-national-code") {
+      toast.error("کدملی وارد شده صحیح نمی باشد")
+    }
+    else {
+      console.log(errors)
+    }
+
   }
 
-  const closeModalHandler=()=>{
-    setShowModal(false)
-  }
-  const addUserHandler=()=>{
-    axios.post(url,postData)
-    .then(res=>console.log(res))
-    .catch((error)=>console.log(error))
-    toast.success("کاربر مورد نظر اضافه گردید")
 
-  }
+
   return (
-
     <Modal
       onClose={closeModalHandler}
       // aria-labelledby="modal-modal-title"
@@ -35,7 +81,6 @@ const AddUser = ({showModal,setShowModal }) => {
       open={showModal}
       sx={{ display: "grid", placeItems: "center" }}
     >
-
       <Box
         sx={{
           border: `1px solid ${grey[300]}`,
@@ -43,7 +88,7 @@ const AddUser = ({showModal,setShowModal }) => {
           // boxShadow:"4px 4px 14px gray",
           width: "30%",
           margin: "auto",
-          height: "250px",
+          height: "500px",
           display: "flex",
           flexDirection: "column",
           borderRadius: "15px",
@@ -63,11 +108,31 @@ const AddUser = ({showModal,setShowModal }) => {
           size="small"
           label="کدملی"
           sx={{ width: "70%", mt: 4 }}
-          onChange={(e) => { setNationalCode(e.target.value) }}
+          onChange={(e) => {
+            setNationalCode(e.target.value);
+          }}
         ></TextField>
+        <TextField
+          variant="outlined"
+          size="small"
+          label="نام"
+          sx={{ width: "70%", mt: 4 }}
+          onChange={(e) => {
+            setFirstName(e.target.value);
+          }}
+        ></TextField>
+        <TextField
+          variant="outlined"
+          size="small"
+          label="نام خانوادگی"
+          sx={{ width: "70%", mt: 4 }}
+          onChange={(e) => {
+            setLastName(e.target.value);
+          }}
+        ></TextField>
+
         <Box sx={{ width: "70%", margin: "auto", position: "relative" }}>
           <TextField
-
             type={showPassword ? "text" : "password"}
             variant="outlined"
             size="small"
@@ -77,17 +142,24 @@ const AddUser = ({showModal,setShowModal }) => {
               setPassword(e.target.value);
             }}
           ></TextField>
-          <IconButton sx={{ position: "absolute", top: "40%", ml: 2, cursor: "pointer" }} onClick={() => setShowPassword(!showPassword)}>
+          <IconButton
+            sx={{ position: "absolute", top: "40%", ml: 2, cursor: "pointer" }}
+            onClick={() => setShowPassword(!showPassword)}
+          >
             <VisibilityIcon />
           </IconButton>
         </Box>
-        <Button variant="contained" color="success" sx={{ mt: 3 }} onClick={() => addUserHandler()}>
+        <Button
+          variant="contained"
+          color="success"
+          sx={{ mt: 3 }}
+          onClick={() => addUserHandler()}
+        >
           <Typography>افزودن</Typography>
         </Button>
-
       </Box>
     </Modal>
-  )
-}
+  );
+};
 
-export default AddUser
+export default AddUser;

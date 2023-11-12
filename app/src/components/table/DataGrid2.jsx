@@ -1,6 +1,67 @@
+import * as React from 'react';
+import { DataGrid } from '@mui/x-data-grid';
+import { createFakeServer } from '@mui/x-data-grid-generator';
+
+const SERVER_OPTIONS = {
+  useCursorPagination: false,
+};
+
+const { useQuery, ...data } = createFakeServer({}, SERVER_OPTIONS);
+
+export default function ServerPaginationGrid() {
+  const [paginationModel, setPaginationModel] = React.useState({
+    page: 0,
+    pageSize: 5,
+  });
+  console.log(paginationModel)
+
+  const { isLoading, rows, pageInfo } = useQuery(paginationModel);
+
+  // Some API clients return undefined while loading
+  // Following lines are here to prevent `rowCountState` from being undefined during the loading
+  const [rowCountState, setRowCountState] = React.useState(
+    pageInfo?.totalRowCount || 0,
+  );
+  React.useEffect(() => {
+    setRowCountState((prevRowCountState) =>
+      pageInfo?.totalRowCount !== undefined
+        ? pageInfo?.totalRowCount
+        : prevRowCountState,
+    );
+  }, [pageInfo?.totalRowCount, setRowCountState]);
+
+  return (
+    <div style={{ height: 400, width: '100%' }}>
+      <DataGrid
+        rowCount={rowCountState}
+        pageSizeOptions={[5]}
+        paginationModel={paginationModel}
+        paginationMode="server"
+        onPaginationModelChange={setPaginationModel}
+      />
+    </div>
+  );
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import * as React from "react";
 import styles from "./DataGrid.module.css";
-import { DataGrid, useGridApiRef } from "@mui/x-data-grid";
+import { DataGrid } from "@mui/x-data-grid";
 import {
   Box,
   Button,
@@ -20,10 +81,6 @@ import axios from "axios";
 export default function DataGridTable() {
   const [open, setOpen] = useState(false);
   const [usersData, setUsersData] = useState()
-  const [paginationModel, setPaginationModel] = useState({
-    page: 0,
-    pageSize: 5,
-  });
   const handleClose = () => {
     setOpen(false);
   };
@@ -31,18 +88,20 @@ export default function DataGridTable() {
     setOpen(true);
     console.log(row);
   };
+
   const getUserData = () => {
-    console.log("inside", paginationModel.pageSize)
-    axios.get(`/admin/users?page=${paginationModel.page}&size=${paginationModel.pageSize}`)
-      .then(res => setUsersData(res.data))
+    axios.get("/admin/users")
+      .then(res => setUsersData(res.data.content))
       .catch(error => console.log(error))
   }
 
   let rows = []
-  usersData ? rows = usersData.content : []
+  usersData ? rows = usersData : []
+  console.log(usersData)
   React.useEffect(() => {
     getUserData()
-  }, [paginationModel.pageSize, paginationModel.page])
+
+  }, [])
 
   const saveHandler = () => {
     axios.put("/admin/users",)
@@ -136,19 +195,6 @@ export default function DataGridTable() {
     },
   ];
 
-
-  const [rowCountState, setRowCountState] = React.useState(
-    usersData?.totalElements || 0,
-  );
-
-  React.useEffect(() => {
-    setRowCountState((prevRowCountState) =>
-      usersData?.totalElements !== undefined
-        ? usersData?.totalElements
-        : prevRowCountState,
-    );
-  }, [usersData?.totalElements, setRowCountState]);
-
   return (
     <>
       <Modal
@@ -199,16 +245,18 @@ export default function DataGridTable() {
         <DataGrid
           rows={rows}
           columns={columns}
-          pageSizeOptions={[5, 10, 20]}
+          initialState={{
+            pagination: {
+              paginationModel: { page: 0, pageSize: 5 },
+            },
+          }}
+          pageSizeOptions={[5, 10]}
           // checkboxSelection
-          rowCount={rowCountState}
-          paginationModel={paginationModel}
-          paginationMode="server"
-          onPaginationModelChange={setPaginationModel}
 
-        // apiRef={apiRef}
         />
       </Box>
     </>
   );
 }
+
+
