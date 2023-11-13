@@ -29,9 +29,11 @@ public class RestTemplateInterceptor implements ClientHttpRequestInterceptor {
     private JWT jwtToken;
 
     private final PortalProperties portalProperties;
+    private final ObjectMapper objectMapper;
 
-    public RestTemplateInterceptor(PortalProperties portalProperties) {
+    public RestTemplateInterceptor(PortalProperties portalProperties, ObjectMapper objectMapper) {
         this.portalProperties = portalProperties;
+        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -59,9 +61,8 @@ public class RestTemplateInterceptor implements ClientHttpRequestInterceptor {
         loginVM.setPassword(portalProperties.getRayten().getPassword());
         HttpClient client = HttpClient.newBuilder().build();
         HttpRequest httpRequest = HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.ofString(new Gson().toJson(loginVM)))
-                .header("Content-Type", "application/json").uri(URI.create(portalProperties.getRayten().getBaseUrl()+"authenticate")).build();
+                .header("Content-Type", "application/json").uri(URI.create(portalProperties.getRayten().getBaseUrl() + "login")).build();
         HttpResponse<String> response = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-        ObjectMapper objectMapper = new ObjectMapper();
         JWTToken token = objectMapper.readValue(response.body(), JWTToken.class);
         return JWTParser.parse(token.getIdToken());
     }
