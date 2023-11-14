@@ -33,7 +33,7 @@ public interface PortalDefaults {
     interface Rayten {
         String username = "admin";
         String password = "admin";
-        String baseUrl = "http://localhost:8080/api/authenticate";
+        String baseUrl = "http://localhost:8080/api/";
     }
 
 }
