@@ -10,12 +10,13 @@
   align-items: center;
   border-radius: 20px;
   margin-top: 20px;
+  font-family: "Yekan";
 }
 .cardText{
   display: flex;
 }
 .header{
-  font-family: "YekanBakhHeavy";
+  font-family: "Yekan";
 }
 .container:hover{
   /* box-shadow: 0px 0px  15px #00FF00; */

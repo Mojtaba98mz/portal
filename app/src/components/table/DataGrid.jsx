@@ -4,7 +4,6 @@ import { DataGrid, useGridApiRef } from "@mui/x-data-grid";
 import {
   Box,
   Button,
-  Divider,
   IconButton,
   Modal,
   TextField,
@@ -17,39 +16,75 @@ import SaveIcon from "@mui/icons-material/Save";
 import { blueGrey, lightGreen } from "@mui/material/colors";
 import { useState } from "react";
 import axios from "axios";
+import { toastMessage } from "../../utils/functions";
+import { useSelector } from "react-redux";
 export default function DataGridTable() {
   const [open, setOpen] = useState(false);
-  const [usersData, setUsersData] = useState()
+  const [usersData, setUsersData] = useState();
+  const [changePassword, setChangePassword] = useState();
+  const [rowData, setRowData] = useState({})
+  const filteredUser = useSelector(state => state.searchUser.data?.content)?? []
+  const filteredUser2 = []
+  console.log("inside daa gird", filteredUser2)
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
     pageSize: 5,
   });
+  // console.log(usersData);
   const handleClose = () => {
     setOpen(false);
   };
   const handleOpen = (row) => {
     setOpen(true);
-    console.log(row);
+    setRowData(row)
+    console.log("in open handler", rowData);
   };
-  const getUserData = () => {
-    console.log("inside", paginationModel.pageSize)
-    axios.get(`/admin/users?page=${paginationModel.page}&size=${paginationModel.pageSize}`)
-      .then(res => setUsersData(res.data))
+  const changePasswordHandler = async () => {
+    await setRowData({ ...rowData, password: changePassword })
+    console.log("inside chage password", rowData)
+    axios
+      .put("/admin/users", rowData)
+      .then((res) => res.status == 200 ? toastMessage("تغییر پسورد با موفقیت انجام شد", "success") : toastMessage("تغییر پسورد انجام نش", "error"))
+      .catch((error) => console.log(error));
+  };
+  const saveUserStatus = (row) => {
+    axios.put("/admin/users", row)
+      .then(res => { res.status == 200 ? toastMessage("تغییرات با موفقیت ذخیره شد", "success") : toastMessage("تغییرات ذخیره نشد", "error") })
       .catch(error => console.log(error))
   }
+  const getUserData = () => {
+    // console.log("inside", paginationModel.pageSize)
+    axios
+      .get(
+        `/admin/users?page=${paginationModel.page}&size=${paginationModel.pageSize}`,
+      )
+      .then((res) => {
+        setUsersData(res.data);
+      })
+      .catch((error) => console.log(error));
+  };
 
-  let rows = []
-  usersData ? rows = usersData.content : []
-  React.useEffect(() => {
-    getUserData()
-  }, [paginationModel.pageSize, paginationModel.page])
-
-  const saveHandler = () => {
-    axios.put("/admin/users",)
-      .then(res => console.log("res Put", res))
-      .catch((error) => console.log(error))
-
+  let rows = [];
+  // usersData ? rows = usersData.content : []
+  // console.log("filtered:", filteredUser);
+  // console.log("inside datagrid filterd",filteredUser.content)
+  if (filteredUser.length > 0) {
+    rows = filteredUser;
+  } else if (!filteredUser.length > 0 && usersData) {
+    rows = usersData.content;
+  } else {
+    rows = [];
   }
+  React.useEffect(() => {
+    getUserData();
+  }, [paginationModel.pageSize, paginationModel.page]);
+
+  // const saveHandler = () => {
+  //   axios
+  //     .put("/admin/users")
+  //     .then((res) => { res.status == 200 ? toastMessage("تغییرات با موفقیت ذخیره شد", "success") : toastMessage("تغییرات ذخیره نشد", "error") })
+  //     .catch((error) => console.log(error));
+  // };
   // {
   // createdBy: "system",
   // createdDate: null,
@@ -64,15 +99,18 @@ export default function DataGridTable() {
   const columns = [
     {
       field: "id",
-      headerName: "ID",
+      headerName: "شناسه",
       align: "center",
       headerAlign: "center",
-      width: 70,
+      resizeable: true,
+      Width: 70,
       headerClassName: "themeHeader",
     },
     {
       field: "firstName",
+      resizeable: true,
       headerName: "نام",
+      headerAlign: "center",
       width: 110,
       headerClassName: "themeHeader",
     },
@@ -122,20 +160,21 @@ export default function DataGridTable() {
       renderCell: ({ row }) => (
         <div>
           <IconButton onClick={() => console.log(row)}>
-            <DeleteForeverIcon />
+            <DeleteForeverIcon color="error" />
           </IconButton>
 
-          <IconButton onClick={() => console.log(row)}>
-            <SaveIcon />
+          <IconButton onClick={() => saveUserStatus(row)}>
+            <SaveIcon color="info" />
           </IconButton>
           <IconButton onClick={() => handleOpen(row)}>
-            <EditIcon />
+            <EditIcon color="success" />
           </IconButton>
         </div>
       ),
     },
   ];
 
+  const columnsReverse = columns.reverse();
 
   const [rowCountState, setRowCountState] = React.useState(
     usersData?.totalElements || 0,
@@ -148,9 +187,24 @@ export default function DataGridTable() {
         : prevRowCountState,
     );
   }, [usersData?.totalElements, setRowCountState]);
+  const localization = {
+    filterOperatorEquals: "مساوی",
+    filterOperatorContains: "شامل",
+    filterOperatorIsEmpty: "خالی باشد",
+    filterOperatorIsNotEmpty: "خالی نباشد",
+    filterOperatorStartsWith: "شروع شود با",
+    filterOperatorEndsWith: "پایان یابد با",
+    filterOperatorIs: "باشد",
+    columnMenuSortAsc: "سورت",
+    columnMenuFilter: "فیلتر",
+    columnMenuSortDesc: "سورت",
+    columnMenuHideColumn: "مخفی کردن ستون ها",
+    columnMenuManageColumns: "مدیریت ستون ها",
+    columnMenuUnsort: "خارج نمودن از سورت",
+  }
 
   return (
-    <>
+    < >
       <Modal
         onClose={handleClose}
         open={open}
@@ -168,12 +222,18 @@ export default function DataGridTable() {
             </Box>
             <h3 style={{ fontFamily: "Yekan" }}> تغییر رمزعبور</h3>
             <div className={styles.content}>
-              <TextField variant="standard" label="رمزعبور جدید"></TextField>
+              <TextField
+                variant="standard"
+                label="رمزعبور جدید"
+                onChange={(e) => setChangePassword(e.target.value)}
+              ></TextField>
               <Button
                 variant="contained"
                 size="large"
                 color="success"
-                onClick={() => { saveHandler() }}
+                onClick={() => {
+                  changePasswordHandler();
+                }}
                 sx={{
                   marginTop: "50px",
                   width: "100%",
@@ -198,15 +258,15 @@ export default function DataGridTable() {
       >
         <DataGrid
           rows={rows}
-          columns={columns}
-          pageSizeOptions={[5, 10, 20]}
+          columns={columnsReverse}
+          pageSizeOptions={[5, 10, 20, 50, 100]}
           // checkboxSelection
           rowCount={rowCountState}
           paginationModel={paginationModel}
           paginationMode="server"
           onPaginationModelChange={setPaginationModel}
-
-        // apiRef={apiRef}
+          sx={{ fontFamily: "Yekan" }}
+          localeText={localization}
         />
       </Box>
     </>

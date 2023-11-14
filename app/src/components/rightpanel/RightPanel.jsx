@@ -24,7 +24,7 @@ const RightPanel = () => {
           borderRadius: "10px",
         }}
       >
-        <ListSubheader component="div" id="nested-list-subheader">
+        <ListSubheader component="div" id="nested-list-subheader" sx={{fontFamily:"Yekan"}} >
           لیست گزینش ها
         </ListSubheader>
         <Divider variant="middle" />

@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import toast from "react-hot-toast";
 import axios from "axios";
-import {MdOutlineLockReset} from "react-icons/md"
+import { MdOutlineLockReset } from "react-icons/md"
 // import {captcha} from "../../assets/captcha"
 
 const Login = () => {
@@ -29,7 +29,7 @@ const Login = () => {
     username: userName,
     password: password,
     captchaAnswer: answerCaptcha,
-    encryptedCaptchaAnswer:captcha.answer,
+    encryptedCaptchaAnswer: captcha.answer,
   };
   // console.log(token);
   const getCapcha = async () => {
@@ -52,24 +52,31 @@ const Login = () => {
     //   .then((res) => res.json())
     //   .then((data) => setToken(data))
     //   .catch((error) => console.log(error));
-    await axios.post("/authenticate",sendData)
-    .then((res)=>setToken(res.data))
-    .catch((error)=>{
-      console.log(error.response.data)
-    if(error?.response?.data=="Bad credentials"){
-      toast.error("نام کاربری یا رمزعبور وجود ندارد یا اشتباه وارد شده است",{
-        duration: 4000,
-        style: { fontFamily: "Yekan", fontSize: "17px" },
-        })
-    }else if(error?.response?.data=="invalid-captcha"){
-        toast.error("کپچا اشتباه وارد شده است",{
-        duration: 4000,
-        style: { fontFamily: "Yekan", fontSize: "17px" },
-        })
-      }else{
-        console.log(error)
-      }
-    })
+    await axios.post("/authenticate", sendData)
+      .then((res) => setToken(res.data))
+      .catch((error) => {
+        console.log(error.response.data)
+        if (error?.response?.data == "Bad credentials") {
+          toast.error("نام کاربری یا رمزعبور وجود ندارد یا اشتباه وارد شده است", {
+            duration: 4000,
+            style: { fontFamily: "Yekan", fontSize: "17px" },
+          })
+        } else if (error?.response?.data == "invalid-captcha") {
+          toast.error("کپچا اشتباه وارد شده است", {
+            duration: 4000,
+            style: { fontFamily: "Yekan", fontSize: "17px" },
+          })
+        } else if (error?.response?.data == "user-not-activated") {
+          toast.error("کاربر وارد شده غیرفعال می باشد", {
+            duration: 4000,
+            style: { fontFamily: "Yekan", fontSize: "17px" },
+          })
+
+        }
+        else {
+          console.log(error)
+        }
+      })
   };
   useEffect(() => {
     getCapcha();
@@ -146,15 +153,15 @@ const Login = () => {
             ></TextField>
           </ThemeProvider>
           <div className={styles.captchaContainer}>
-          <img
-            src={`data:image/jpeg;base64,${captcha.image}`}
-            width={"180px"}
-            className={styles.captcha}
-            alt="captchaPic"
-          />
-            <MdOutlineLockReset size="28" onClick={()=>{getCapcha()}} />
+            <img
+              src={`data:image/jpeg;base64,${captcha.image}`}
+              width={"180px"}
+              className={styles.captcha}
+              alt="captchaPic"
+            />
+            <MdOutlineLockReset size="28" onClick={() => { getCapcha() }} />
           </div>
-          <input 
+          <input
             onChange={(e) => {
               setAnswerCaptcha(e.target.value);
             }}

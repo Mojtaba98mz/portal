@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import DataGridTable from "../../../../components/table/DataGrid";
-import { Box, Button, Container, IconButton, TextField, Typography } from "@mui/material";
+import { Box, Button, Container, Typography } from "@mui/material";
 import AddUser from "./AddUser";
+import UserFilters from "./UserFilters";
+import { useSelector } from "react-redux";
 const UsersManagement = () => {
   // console.log(showPassword)
   // console.log("sna",nationalCode,"password:",password)
@@ -21,13 +23,9 @@ const UsersManagement = () => {
         <Typography variant="h5" marginY="30px" sx={{ fontFamily: "YeKan" }}>
           مدیریت کاربران
         </Typography>
-        <Button variant="outlined" color="success" sx={{ marginLeft: "auto" }} onClick={() => { setShowModal(true) }}>افزودن کاربر</Button>
-        <Box>
-          <TextField variant="outlined" size="small" label="کدملی" ></TextField>
-          <IconButton></IconButton>
-
-        </Box>
-        <DataGridTable></DataGridTable>
+        <Button variant="outlined" color="success" sx={{ marginLeft: "auto", marginBottom: "10px" }} onClick={() => { setShowModal(true) }}>افزودن کاربر</Button>
+        <UserFilters></UserFilters>
+        <DataGridTable ></DataGridTable>
         <AddUser showModal={showModal} setShowModal={setShowModal}></AddUser>
 
       </Box>
