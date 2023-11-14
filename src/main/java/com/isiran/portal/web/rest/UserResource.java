@@ -6,6 +6,7 @@ import com.isiran.portal.repository.UserRepository;
 import com.isiran.portal.security.AuthoritiesConstants;
 import com.isiran.portal.security.dto.AdminUserDTO;
 import com.isiran.portal.service.UserService;
+import com.isiran.portal.service.criteria.UserCriteria;
 import com.isiran.portal.util.PaginationUtil;
 import com.isiran.portal.web.rest.errors.BadRequestAlertException;
 import com.isiran.portal.web.rest.errors.LoginAlreadyUsedException;
@@ -80,12 +81,12 @@ public class UserResource {
 
     @GetMapping("/users")
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
-    public ResponseEntity<Page<AdminUserDTO>> getAllUsers(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+    public ResponseEntity<Page<AdminUserDTO>> getAllUsers(UserCriteria criteria, @org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         log.debug("REST request to get all User for an admin");
         if (!onlyContainsAllowedProperties(pageable)) {
             return ResponseEntity.badRequest().build();
         }
-        final Page<AdminUserDTO> page = userService.getAllManagedUsers(pageable);
+        final Page<AdminUserDTO> page = userService.getAllManagedUsers(criteria,pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return new ResponseEntity<>(page, headers, HttpStatus.OK);
     }

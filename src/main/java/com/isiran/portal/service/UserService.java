@@ -2,11 +2,13 @@ package com.isiran.portal.service;
 
 import com.isiran.portal.domain.Role;
 import com.isiran.portal.domain.User;
+import com.isiran.portal.domain.User_;
 import com.isiran.portal.repository.RoleRepository;
 import com.isiran.portal.repository.UserRepository;
 import com.isiran.portal.security.AuthoritiesConstants;
 import com.isiran.portal.security.SecurityUtils;
 import com.isiran.portal.security.dto.AdminUserDTO;
+import com.isiran.portal.service.criteria.UserCriteria;
 import com.isiran.portal.util.ValidationUtil;
 import com.isiran.portal.web.rest.vm.ManagedUserVM;
 import org.slf4j.Logger;
@@ -14,13 +16,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -29,7 +30,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @Transactional
-public class UserService {
+public class UserService extends QueryService<User> {
 
     private final Logger log = LoggerFactory.getLogger(UserService.class);
 
@@ -225,8 +226,9 @@ public class UserService {
     }*/
 
     @Transactional(readOnly = true)
-    public Page<AdminUserDTO> getAllManagedUsers(Pageable pageable) {
-        return userRepository.findAll(pageable).map(AdminUserDTO::new);
+    public Page<AdminUserDTO> getAllManagedUsers(UserCriteria criteria, Pageable pageable) {
+        final Specification<User> specification = createSpecification(criteria);
+        return userRepository.findAll(specification,pageable).map(AdminUserDTO::new);
     }
     /*@Transactional(readOnly = true)
     public Page<UserDTO> getAllPublicUsers(Pageable pageable) {
@@ -270,5 +272,27 @@ public class UserService {
     }*/
     private void clearUserCaches(User user) {
         Objects.requireNonNull(cacheManager.getCache(UserRepository.USERS_BY_USERNAME_CACHE)).evict(user.getUsername());
+    }
+
+    protected Specification<User> createSpecification(UserCriteria criteria) {
+        Specification<User> specification = Specification.where(null);
+        if (criteria != null) {
+            if (criteria.getDistinct() != null) {
+                specification = specification.and(distinct(criteria.getDistinct()));
+            }
+            if (criteria.getId() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getId(), User_.id));
+            }
+            if (criteria.getUsername() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getUsername(), User_.username));
+            }
+            if (criteria.getFirstName() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getFirstName(), User_.firstName));
+            }
+            if (criteria.getLastName() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getLastName(), User_.lastName));
+            }
+        }
+        return specification;
     }
 }
