@@ -17,17 +17,17 @@ public class KeyPairGeneratorUtil {
 
     public static PublicKey getPublicKey() {
         if (publicKey == null)
-            initialKey();
+            initialKeyPair();
         return publicKey;
     }
 
     public static PrivateKey getPrivateKey() {
         if (privateKey == null)
-            initialKey();
+            initialKeyPair();
         return privateKey;
     }
 
-    private static void initialKey() {
+    private static void initialKeyPair() {
         KeyPairGenerator keyPairGen = null;
         try {
             keyPairGen = KeyPairGenerator.getInstance("RSA");
