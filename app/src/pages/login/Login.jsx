@@ -13,6 +13,7 @@ import { jwtDecode } from "jwt-decode";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { MdOutlineLockReset } from "react-icons/md"
+import { toastMessage } from "../../utils/functions";
 // import {captcha} from "../../assets/captcha"
 
 const Login = () => {
@@ -57,21 +58,11 @@ const Login = () => {
       .catch((error) => {
         console.log(error.response.data)
         if (error?.response?.data == "Bad credentials") {
-          toast.error("نام کاربری یا رمزعبور وجود ندارد یا اشتباه وارد شده است", {
-            duration: 4000,
-            style: { fontFamily: "Yekan", fontSize: "17px" },
-          })
+          toastMessage("نام کاربری یا رمزعبور وجود ندارد یا اشتباه وارد شده است","error")
         } else if (error?.response?.data == "invalid-captcha") {
-          toast.error("کپچا اشتباه وارد شده است", {
-            duration: 4000,
-            style: { fontFamily: "Yekan", fontSize: "17px" },
-          })
+          toastMessage("کپچا اشتباه وارد شده است","error")
         } else if (error?.response?.data == "user-not-activated") {
-          toast.error("کاربر وارد شده غیرفعال می باشد", {
-            duration: 4000,
-            style: { fontFamily: "Yekan", fontSize: "17px" },
-          })
-
+          toastMessage("کاربر وارد شده غیرفعال می باشد","error")
         }
         else {
           console.log(error)
@@ -85,10 +76,7 @@ const Login = () => {
       localStorage.setItem("userData", JSON.stringify(jwtData));
       localStorage.setItem("Token", JSON.stringify(token));
       console.log(jwtData);
-      toast.success("ورود با موفقیت انجام شد", {
-        duration: 4000,
-        style: { fontFamily: "Yekan", fontSize: "17px" },
-      });
+      toastMessage("ورود با موفقیت انجام شد","success");
       navigate("/panel/evaluations");
     }
     // console.log("res:",token?.response?.data)
