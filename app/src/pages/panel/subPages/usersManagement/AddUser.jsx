@@ -57,10 +57,10 @@ const AddUser = ({ showModal, setShowModal }) => {
 
   const notif = () => {
     if (addedUser?.data?.username) {
-      toast.success(`کاربر ${addedUser.data.username}با موفقست ساخته شد`);
+      toast.success(`کاربر ${addedUser.data.username}با موفقیت اضافه  گردید`);
     }
     else if (errors?.response?.data?.detail == "login-already-used") {
-      toast.error("یوزر مورد نظر قبلا ساخته شده است");
+      toast.error("یوزری بااین کدملی قبلا در سیستم تعریف شده است");
     }
     else if (errors?.response?.data == "invalid-national-code") {
       toast.error("کدملی وارد شده صحیح نمی باشد")
