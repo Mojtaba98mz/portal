@@ -9,6 +9,7 @@ import com.isiran.portal.security.AuthoritiesConstants;
 import com.isiran.portal.security.SecurityUtils;
 import com.isiran.portal.security.dto.AdminUserDTO;
 import com.isiran.portal.service.criteria.UserCriteria;
+import com.isiran.portal.util.KeyPairGeneratorUtil;
 import com.isiran.portal.util.ValidationUtil;
 import com.isiran.portal.web.rest.vm.ManagedUserVM;
 import org.slf4j.Logger;
@@ -22,7 +23,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -155,8 +159,9 @@ public class UserService extends QueryService<User> {
                     user.setLastName(userDTO.getLastName());
                     user.setActivated(userDTO.isActivated());
                     Set<Role> managedAuthorities = user.getAuthorities();
-                    if (userDTO.getPassword() != null)
-                        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+                    if (userDTO.getPassword() != null) {
+                        user.setPassword(passwordEncoder.encode(KeyPairGeneratorUtil.decrypt(userDTO.getPassword())));
+                    }
                     managedAuthorities.clear();
                     userDTO
                             .getAuthorities()

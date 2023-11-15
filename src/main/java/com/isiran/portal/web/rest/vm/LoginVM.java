@@ -12,7 +12,7 @@ public class LoginVM {
     private String username;
 
     @NotNull
-    @Size(min = 4, max = 100)
+    @Size(min = 4)
     private String password;
 
     private String captchaAnswer;
