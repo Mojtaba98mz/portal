@@ -18,40 +18,68 @@ import { useState } from "react";
 import axios from "axios";
 import { toastMessage } from "../../utils/functions";
 import { useSelector } from "react-redux";
+import EncryptText from "../encyptText/EncryptText";
 export default function DataGridTable() {
   const [open, setOpen] = useState(false);
   const [usersData, setUsersData] = useState();
   const [changePassword, setChangePassword] = useState();
-  const [rowData, setRowData] = useState({})
-  const filteredUser = useSelector(state => state.searchUser.data?.content)?? []
-  const filteredUser2 = []
-  console.log("inside daa gird", filteredUser2)
+  const [rowData, setRowData] = useState({});
+  const filteredUser =
+    useSelector((state) => state.searchUser.data?.content) ?? [];
+  // const filteredUser2 = [];
+  // console.log("inside daa gird", filteredUser2);
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
     pageSize: 5,
   });
-  // console.log(usersData);
+  const encryptedPass = EncryptText(changePassword)
+  console.log(encryptedPass)
+  //encrypted passsword 
+  // const [publickey, setPublickey] = useState("");
+  // const getPublickey = () => {
+  //   axios
+  //     .get("/publicKey")
+  //     .then((res) => setPublickey(res.data))
+  //     .catch((error) => console.log(error));
+  // };
+  // const encypt = new JSEncrypt
+  // encypt.setPublicKey(publickey)
+  // const encryptedPass = encypt.encrypt(changePassword)
+  // // setEncryptedPassword(encryptedPass)
+  // console.log(publickey)
+  // // console.log(usersData);
   const handleClose = () => {
     setOpen(false);
   };
   const handleOpen = (row) => {
     setOpen(true);
-    setRowData(row)
+    setRowData(row);
     console.log("in open handler", rowData);
   };
-  const changePasswordHandler = async () => {
-    await setRowData({ ...rowData, password: changePassword })
-    console.log("inside chage password", rowData)
+  console.log(changePassword)
+  const changePasswordHandler = () => {
+    // setRowData({ ...rowData, password:"amir"});
+    const sendData = { ...rowData,password: encryptedPass }
+    console.log(sendData)
     axios
-      .put("/admin/users", rowData)
-      .then((res) => res.status == 200 ? toastMessage("تغییر پسورد با موفقیت انجام شد", "success") : toastMessage("تغییر پسورد انجام نش", "error"))
+      .put("/admin/users", sendData)
+      .then((res) =>
+        res.status == 200
+          ? toastMessage("تغییر پسورد با موفقیت انجام شد", "success")
+          : toastMessage("تغییر پسورد انجام نش", "error"),
+      )
       .catch((error) => console.log(error));
   };
   const saveUserStatus = (row) => {
-    axios.put("/admin/users", row)
-      .then(res => { res.status == 200 ? toastMessage("تغییرات با موفقیت ذخیره شد", "success") : toastMessage("تغییرات ذخیره نشد", "error") })
-      .catch(error => console.log(error))
-  }
+    axios
+      .put("/admin/users", row)
+      .then((res) => {
+        res.status == 200
+          ? toastMessage("تغییرات با موفقیت ذخیره شد", "success")
+          : toastMessage("تغییرات ذخیره نشد", "error");
+      })
+      .catch((error) => console.log(error));
+  };
   const getUserData = () => {
     // console.log("inside", paginationModel.pageSize)
     axios
@@ -201,10 +229,10 @@ export default function DataGridTable() {
     columnMenuHideColumn: "مخفی کردن ستون ها",
     columnMenuManageColumns: "مدیریت ستون ها",
     columnMenuUnsort: "خارج نمودن از سورت",
-  }
+  };
 
   return (
-    < >
+    <>
       <Modal
         onClose={handleClose}
         open={open}

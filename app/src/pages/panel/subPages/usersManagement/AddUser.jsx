@@ -11,6 +11,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import { grey } from "@mui/material/colors";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { toastMessage } from "../../../../utils/functions";
 
 const AddUser = ({ showModal, setShowModal }) => {
   const [nationalCode, setNationalCode] = useState();
@@ -57,13 +58,13 @@ const AddUser = ({ showModal, setShowModal }) => {
 
   const notif = () => {
     if (addedUser?.data?.username) {
-      toast.success(`کاربر ${addedUser.data.username}با موفقیت اضافه  گردید`);
+      toastMessage(`کاربر ${addedUser.data.username}با موفقیت اضافه  گردید`,"success");
     }
     else if (errors?.response?.data?.detail == "login-already-used") {
-      toast.error("یوزری بااین کدملی قبلا در سیستم تعریف شده است");
+      toastMessage("یوزری بااین کدملی قبلا در سیستم تعریف شده است","error");
     }
     else if (errors?.response?.data == "invalid-national-code") {
-      toast.error("کدملی وارد شده صحیح نمی باشد")
+      toastMessage("کدملی وارد شده صحیح نمی باشد","error")
     }
     else {
       console.log(errors)
