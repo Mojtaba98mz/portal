@@ -19,7 +19,6 @@ import axios from "axios";
 import { toastMessage } from "../../utils/functions";
 import { useSelector } from "react-redux";
 import EncryptText from "../encyptText/EncryptText";
-import JSEncrypt from "jsencrypt";
 export default function DataGridTable() {
   const [open, setOpen] = useState(false);
   const [usersData, setUsersData] = useState();
