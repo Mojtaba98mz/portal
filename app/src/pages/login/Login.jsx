@@ -13,7 +13,10 @@ import { jwtDecode } from "jwt-decode";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { MdOutlineLockReset } from "react-icons/md"
-import { toastMessage } from "../../utils/functions";
+import {  toastMessage } from "../../utils/functions";
+import JSEncrypt from "jsencrypt";
+import EncryptText from "../../components/encyptText/EncryptText";
+
 // import {captcha} from "../../assets/captcha"
 
 const Login = () => {
@@ -23,15 +26,25 @@ const Login = () => {
   const [token, setToken] = useState();
   const [answerCaptcha, setAnswerCaptcha] = useState("");
   const [captcha, setCaptcha] = useState("");
+  const [publicKey, setPublicKey] = useState()
+  const [encryptedPassword,setEncryptedPass]=useState("")
   // console.log("answerCaptcha:", answerCaptcha);
   // console.log("captcha:", captcha);
   // "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNjk4NjQ3NDY0LCJhdXRoIjoiUk9MRV9VU0VSIiwiaWF0IjoxNjk4NTYxMDY0fQ.drJ-vqglz1KKfJSqJW85F81tSrvlFV6uMyrkEGHVkY1-dDPe0dfYM4AakkScxWK_SQc6PUXDe7N9XSHSeVR8zQ",
   const sendData = {
     username: userName,
-    password: password,
+    password: encryptedPassword,
     captchaAnswer: answerCaptcha,
     encryptedCaptchaAnswer: captcha.answer,
   };
+  useEffect(() => {
+    const encypt = new JSEncrypt
+    encypt.setPublicKey(publicKey)
+    const encryptedPass = encypt.encrypt(password)
+    setEncryptedPass(encryptedPass)
+  }, [publicKey, password])
+
+
   // console.log(token);
   const getCapcha = async () => {
     await axios
@@ -58,25 +71,31 @@ const Login = () => {
       .catch((error) => {
         console.log(error.response.data)
         if (error?.response?.data == "Bad credentials") {
-          toastMessage("نام کاربری یا رمزعبور وجود ندارد یا اشتباه وارد شده است","error")
+          toastMessage("نام کاربری یا رمزعبور وجود ندارد یا اشتباه وارد شده است", "error")
         } else if (error?.response?.data == "invalid-captcha") {
-          toastMessage("کپچا اشتباه وارد شده است","error")
+          toastMessage("کپچا اشتباه وارد شده است", "error")
         } else if (error?.response?.data == "user-not-activated") {
-          toastMessage("کاربر وارد شده غیرفعال می باشد","error")
+          toastMessage("کاربر وارد شده غیرفعال می باشد", "error")
         }
         else {
           console.log(error)
         }
       })
   };
+  const getPublickey = () => {
+    axios.get("/publicKey")
+      .then(res => setPublicKey(res.data))
+      .catch(error => console.log(error))
+  }
   useEffect(() => {
+    getPublickey()
     getCapcha();
     if (token?.id_token) {
       const jwtData = jwtDecode(token.id_token);
       localStorage.setItem("userData", JSON.stringify(jwtData));
       localStorage.setItem("Token", JSON.stringify(token));
       console.log(jwtData);
-      toastMessage("ورود با موفقیت انجام شد","success");
+      toastMessage("ورود با موفقیت انجام شد", "success");
       navigate("/panel/evaluations");
     }
     // console.log("res:",token?.response?.data)

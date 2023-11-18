@@ -1,3 +1,4 @@
+import JSEncrypt from "jsencrypt"
 import { useState } from "react"
 import toast from "react-hot-toast"
 
@@ -24,5 +25,12 @@ const toastMessage = (message, status, duration = 4000, fontFamily = "Yekan", fo
 
 
 
-export { localStorageToParse ,toastMessage}
+const encryptText = () => {
+  const encypt = new JSEncrypt
+  encypt.setPublicKey(publicKey)
+  const encryptedPass = encypt.encrypt(password)
+  return encryptedPass
+}
+
+export { localStorageToParse, toastMessage, encryptText }
 

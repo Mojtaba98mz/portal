@@ -1,6 +1,9 @@
 import React from 'react'
+import EncryptText from '../../../../components/encyptText/EncryptText'
 
 const ChangePassword = () => {
+  const [encryptedText]=EncryptText("test")
+  console.log("enc",encryptedText)
 
   const changePasswordHandler = (row) => {
     axios.put("/admin/users", row)
