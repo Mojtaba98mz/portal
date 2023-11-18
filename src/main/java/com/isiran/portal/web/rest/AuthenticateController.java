@@ -1,13 +1,15 @@
 package com.isiran.portal.web.rest;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import cn.apiclub.captcha.Captcha;
 import com.isiran.portal.config.PortalConstants;
 import com.isiran.portal.config.PortalProperties;
 import com.isiran.portal.security.dto.JWTToken;
 import com.isiran.portal.service.InvalidCaptchaException;
+import com.isiran.portal.util.CaptchaUtil;
+import com.isiran.portal.util.KeyPairGeneratorUtil;
+import com.isiran.portal.web.rest.vm.CaptchaVM;
 import com.isiran.portal.web.rest.vm.LoginVM;
 import jakarta.validation.Valid;
-import org.jasypt.encryption.StringEncryptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,13 +28,11 @@ import org.springframework.security.oauth2.jwt.JwsHeader;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Base64;
 import java.util.stream.Collectors;
 
 import static com.isiran.portal.security.SecurityUtils.AUTHORITIES_KEY;
@@ -51,24 +51,22 @@ public class AuthenticateController {
 
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
-    private final StringEncryptor encryptor;
-
     private final Environment env;
 
     private final PasswordEncoder passwordEncoder;
     private final PortalProperties portalProperties;
 
-    public AuthenticateController(JwtEncoder jwtEncoder, AuthenticationManagerBuilder authenticationManagerBuilder, StringEncryptor encryptor, Environment env, PasswordEncoder passwordEncoder, PortalProperties portalProperties) {
+    public AuthenticateController(JwtEncoder jwtEncoder, AuthenticationManagerBuilder authenticationManagerBuilder, Environment env, PasswordEncoder passwordEncoder, PortalProperties portalProperties) {
         this.jwtEncoder = jwtEncoder;
         this.authenticationManagerBuilder = authenticationManagerBuilder;
-        this.encryptor = encryptor;
         this.env = env;
         this.passwordEncoder = passwordEncoder;
         this.portalProperties = portalProperties;
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<JWTToken> authorize(@Valid @RequestBody LoginVM loginVM) {
+    public ResponseEntity<JWTToken> authorize(@Valid @RequestBody LoginVM loginVM) throws Exception {
+        loginVM.setPassword(KeyPairGeneratorUtil.decrypt(loginVM.getPassword()));
         if (env.acceptsProfiles(Profiles.of(PortalConstants.SPRING_PROFILE_PRODUCTION))) {
             if (!passwordEncoder.matches(portalProperties.getCaptchaSalt() + loginVM.getCaptchaAnswer(), loginVM.getEncryptedCaptchaAnswer()))
                 throw new InvalidCaptchaException();
@@ -84,6 +82,19 @@ public class AuthenticateController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setBearerAuth(jwt);
         return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);
+    }
+
+    @GetMapping("/captcha")
+    public CaptchaVM captcha() {
+        Captcha captcha = CaptchaUtil.createCaptcha(200, 70);
+        String captchaAnswer = captcha.getAnswer();
+        String hashedAnswer = passwordEncoder.encode(portalProperties.getCaptchaSalt() + captchaAnswer);
+        return new CaptchaVM(hashedAnswer, CaptchaUtil.encodeCaptcha(captcha));
+    }
+
+    @GetMapping("/publicKey")
+    public String test() throws Exception {
+        return new String(Base64.getEncoder().encode(KeyPairGeneratorUtil.getPublicKey().getEncoded()));
     }
 
     public String createToken(Authentication authentication) {
