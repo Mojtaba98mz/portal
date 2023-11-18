@@ -9,6 +9,7 @@ const DetailEvaluations = () => {
   const params = useParams();
   const code = params.id;
   const paginationHandler=(event,value)=>{
+    console.log(event)
     console.log(value)
 
   }
@@ -24,7 +25,7 @@ const DetailEvaluations = () => {
       </div>
       <Box sx={{ width: "100%", display: "flex", justifyContent: "center",marginBottom:"20px" }}>
         <Stack spacing={2} >
-          <Pagination count={10} color="primary" variant="outlined" sx={{ direction: "rtl" }} shape="circular" renderItem={(item) => (<PaginationItem
+          <Pagination count={10} color="primary" variant="outlined"  shape="circular" renderItem={(item) => (<PaginationItem
             slots={{ next: ArrowBackIosNewIcon, previous: ArrowForwardIosIcon }}
             {...item}
           />)}

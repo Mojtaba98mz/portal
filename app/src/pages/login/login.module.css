@@ -25,10 +25,13 @@
 .Pic {
   width: 70%;
   height: 100%;
-  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  /* border-right: 1px solid rgba(0, 0, 0, 0.1); */
   position: relative;
+  border-radius: 20px ;
+  /* display: none; */
 }
 .backgroundPage {
+
   box-sizing: border-box;
   margin: 0px;
   padding: 0px;
@@ -92,6 +95,7 @@
 }
 
 .pattern {
+  border-radius: 20px;
   background-image: url("../../assets/pics/pattern.jpg");
   filter: grayscale(100);
   /* background-repeat: repeat; */
@@ -135,4 +139,22 @@
   margin-top: 40px;
   height:fit-content;
   /* border: 1px solid black; */
+  /* border: 1px solid black; */
 }
+@media only screen and (max-width: 700px) {
+.pattern{
+    display: none;
+  }
+  .loginWrapper{
+    display: none;
+    width: 0px;
+  }
+  .inputsContent{
+    border-radius: 20px;
+    width: 100%;
+  }
+  .Pic{
+    width: 0%;
+  }
+}
+

@@ -33,7 +33,7 @@ const Panel = () => {
                   padding: "10px",
                 }}
               >
-                <Grid item xs={10}>
+                <Grid item xs={12} md={10} >
                   <div
                     style={{
                       // background: "yellow",
@@ -50,7 +50,7 @@ const Panel = () => {
                     <PanelRoutes></PanelRoutes>
                   </div>
                 </Grid>
-                <Grid item xs={2} sx={{ width: "300px" }}>
+                <Grid item xs={12} md={2} sx={{ width: "300px" }}  >
                   <div style={{ width: "100%", height: "100%" }}>
                     <RightPanel />
                   </div>

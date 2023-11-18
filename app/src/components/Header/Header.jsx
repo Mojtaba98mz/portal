@@ -87,7 +87,7 @@ const Header = () => {
                 </Typography>
               </Box>
             )}
-            <Box sx={{ marginLeft: "auto" }}>
+            <Box sx={{ marginLeft: "auto" }} md={0}>
               <Box
                 sx={{
                   display: "flex",
@@ -95,7 +95,7 @@ const Header = () => {
                   alignItems: "center",
                 }}
               >
-                <Typography color="black" style={{ paddingRight: 18,fontFamily:"YeKanBakhMedium" }}>
+                <Typography color="black" sx={{display:{xs:"none",sm:"block"}}} style={{ paddingRight: 18,fontFamily:"YeKanBakhMedium" }} >
                   کانون مرکزی ارزیابی و رشد سرمایه های انسانی{" "}
                 </Typography>
                 <img
