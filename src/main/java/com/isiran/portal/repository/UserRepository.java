@@ -1,22 +1,20 @@
 package com.isiran.portal.repository;
 
-import java.util.Optional;
-
 import com.isiran.portal.domain.User;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.jpa.repository.EntityGraph;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> , JpaSpecificationExecutor<User> {
+public interface UserRepository extends MongoRepository<User, String> {
 
   String USERS_BY_USERNAME_CACHE = "usersByUsername";
 
-  @EntityGraph(attributePaths = "authorities")
   @Cacheable(cacheNames = USERS_BY_USERNAME_CACHE)
   Optional<User> findOneWithAuthoritiesByUsername(String username);
 
+  @Cacheable(cacheNames = USERS_BY_USERNAME_CACHE)
   Optional<User> findOneByUsername(String username);
 }
