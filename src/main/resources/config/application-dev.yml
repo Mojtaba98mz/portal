@@ -1,18 +1,9 @@
 spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/testdb1
-    username: postgres
-    password: changeme
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        cache:
-          use_second_level_cache: true
-          use_query_cache: false
-        generate_statistics: false
-        jdbc:
-          batch_size: 25
-    open-in-view: false
-    show-sql: true
+  data:
+    mongodb:
+      host: 127.0.0.1
+      port: 27017
+      authentication-database: admin
+      username: root
+      password: example
+      database: portal

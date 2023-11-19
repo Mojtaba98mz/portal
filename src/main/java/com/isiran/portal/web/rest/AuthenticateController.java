@@ -66,8 +66,8 @@ public class AuthenticateController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<JWTToken> authorize(@Valid @RequestBody LoginVM loginVM) throws Exception {
-        loginVM.setPassword(KeyPairGeneratorUtil.decrypt(loginVM.getPassword()));
         if (env.acceptsProfiles(Profiles.of(PortalConstants.SPRING_PROFILE_PRODUCTION))) {
+            loginVM.setPassword(KeyPairGeneratorUtil.decrypt(loginVM.getPassword()));
             if (!passwordEncoder.matches(portalProperties.getCaptchaSalt() + loginVM.getCaptchaAnswer(), loginVM.getEncryptedCaptchaAnswer()))
                 throw new InvalidCaptchaException();
         }
@@ -82,19 +82,6 @@ public class AuthenticateController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setBearerAuth(jwt);
         return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);
-    }
-
-    @GetMapping("/captcha")
-    public CaptchaVM captcha() {
-        Captcha captcha = CaptchaUtil.createCaptcha(200, 70);
-        String captchaAnswer = captcha.getAnswer();
-        String hashedAnswer = passwordEncoder.encode(portalProperties.getCaptchaSalt() + captchaAnswer);
-        return new CaptchaVM(hashedAnswer, CaptchaUtil.encodeCaptcha(captcha));
-    }
-
-    @GetMapping("/publicKey")
-    public String publicKey() {
-        return new String(Base64.getEncoder().encode(KeyPairGeneratorUtil.getPublicKey().getEncoded()));
     }
 
     public String createToken(Authentication authentication) {

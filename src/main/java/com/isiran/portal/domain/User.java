@@ -11,56 +11,45 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @Data
-@Entity
-@Table(name = "users")
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class User extends AbstractAuditingEntity<Long> implements Serializable {
+@Document(collection = "users")
+public class User extends AbstractAuditingEntity<String> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
-    private Long id;
+    private String id;
 
     @NotNull
     @Pattern(regexp = Constants.LOGIN_REGEX)
     @Size(min = 1, max = 50)
-    @Column(length = 50, unique = true, nullable = false)
+    @Indexed
     private String username;
 
     @JsonIgnore
     @NotNull
     @Size(min = 60, max = 60)
-    @Column(length = 60, nullable = false)
     private String password;
 
     @Size(max = 50)
-    @Column(name = "first_name", length = 50)
+    @Field("first_name")
     private String firstName;
 
     @Size(max = 50)
-    @Column(name = "last_name", length = 50)
+    @Field("last_name")
     private String lastName;
 
-    @Column(name = "activated")
     private Boolean activated;
 
     @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-            name = "user_role",
-            joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") },
-            inverseJoinColumns = { @JoinColumn(name = "role_name", referencedColumnName = "name") }
-    )
-    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @BatchSize(size = 20)
     private Set<Role> authorities = new HashSet<>();
 
-    @Override
-    public Long getId() {
-        return id;
-    }
+//    public String getId() {
+//        return id;
+//    }
 }
