@@ -84,19 +84,6 @@ public class AuthenticateController {
         return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);
     }
 
-    @GetMapping("/captcha")
-    public CaptchaVM captcha() {
-        Captcha captcha = CaptchaUtil.createCaptcha(200, 70);
-        String captchaAnswer = captcha.getAnswer();
-        String hashedAnswer = passwordEncoder.encode(portalProperties.getCaptchaSalt() + captchaAnswer);
-        return new CaptchaVM(hashedAnswer, CaptchaUtil.encodeCaptcha(captcha));
-    }
-
-    @GetMapping("/publicKey")
-    public String publicKey() {
-        return new String(Base64.getEncoder().encode(KeyPairGeneratorUtil.getPublicKey().getEncoded()));
-    }
-
     public String createToken(Authentication authentication) {
         String authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(" "));
 
