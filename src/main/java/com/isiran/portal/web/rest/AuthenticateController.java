@@ -66,8 +66,8 @@ public class AuthenticateController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<JWTToken> authorize(@Valid @RequestBody LoginVM loginVM) throws Exception {
-        loginVM.setPassword(KeyPairGeneratorUtil.decrypt(loginVM.getPassword()));
         if (env.acceptsProfiles(Profiles.of(PortalConstants.SPRING_PROFILE_PRODUCTION))) {
+            loginVM.setPassword(KeyPairGeneratorUtil.decrypt(loginVM.getPassword()));
             if (!passwordEncoder.matches(portalProperties.getCaptchaSalt() + loginVM.getCaptchaAnswer(), loginVM.getEncryptedCaptchaAnswer()))
                 throw new InvalidCaptchaException();
         }
