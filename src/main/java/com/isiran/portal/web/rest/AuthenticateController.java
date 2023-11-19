@@ -93,7 +93,7 @@ public class AuthenticateController {
     }
 
     @GetMapping("/publicKey")
-    public String test() throws Exception {
+    public String publicKey() {
         return new String(Base64.getEncoder().encode(KeyPairGeneratorUtil.getPublicKey().getEncoded()));
     }
 
