@@ -1,21 +1,7 @@
 spring:
-  datasource:
-    url: ENC(g8jJWIcr/xNnzv5bLgZNLGIt9f0M1Vc8r6QddLwADeKp8R3kY7Hwod9pA5RamVPK5InBXgKIYIY=)
-    username: ENC(QYdKBy2JNGZkoUSMEUUTOr0B64crAgDI)
-    password: ENC(GxtBo6OTIzitLJCIHdClc0Lh9IUUNndh)
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        cache:
-          use_second_level_cache: true
-          use_query_cache: false
-        generate_statistics: false
-        jdbc:
-          batch_size: 25
-    open-in-view: false
-    show-sql: false
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/portal
 portal:
   clientApp:
     name: 'portalApp'

@@ -2,7 +2,6 @@ package com.isiran.portal.service;
 
 import com.isiran.portal.domain.Role;
 import com.isiran.portal.domain.User;
-import com.isiran.portal.domain.User_;
 import com.isiran.portal.repository.RoleRepository;
 import com.isiran.portal.repository.UserRepository;
 import com.isiran.portal.security.AuthoritiesConstants;
@@ -17,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,8 +31,7 @@ import java.util.stream.Collectors;
  * Service class for managing users.
  */
 @Service
-@Transactional
-public class UserService extends QueryService<User> {
+public class UserService /*extends QueryService<User>*/ {
 
     private final Logger log = LoggerFactory.getLogger(UserService.class);
 
@@ -58,61 +55,6 @@ public class UserService extends QueryService<User> {
         this.cacheManager = cacheManager;
     }
 
-    /*public Optional<User> activateRegistration(String key) {
-        log.debug("Activating user for activation key {}", key);
-        return userRepository
-            .findOneByActivationKey(key)
-            .map(user -> {
-                // activate given user for the registration key.
-                user.setActivated(true);
-                user.setActivationKey(null);
-                this.clearUserCaches(user);
-                log.debug("Activated user: {}", user);
-                return user;
-            });
-    }*/
-
-    /*public User registerUser(AdminUserDTO userDTO, String password) {
-        userRepository
-            .findOneByLogin(userDTO.getLogin().toLowerCase())
-            .ifPresent(existingUser -> {
-                boolean removed = removeNonActivatedUser(existingUser);
-                if (!removed) {
-                    throw new UsernameAlreadyUsedException();
-                }
-            });
-        userRepository
-            .findOneByEmailIgnoreCase(userDTO.getEmail())
-            .ifPresent(existingUser -> {
-                boolean removed = removeNonActivatedUser(existingUser);
-                if (!removed) {
-                    throw new EmailAlreadyUsedException();
-                }
-            });
-        User newUser = new User();
-        String encryptedPassword = passwordEncoder.encode(password);
-        newUser.setLogin(userDTO.getLogin().toLowerCase());
-        // new user gets initially a generated password
-        newUser.setPassword(encryptedPassword);
-        newUser.setFirstName(userDTO.getFirstName());
-        newUser.setLastName(userDTO.getLastName());
-        if (userDTO.getEmail() != null) {
-            newUser.setEmail(userDTO.getEmail().toLowerCase());
-        }
-        newUser.setImageUrl(userDTO.getImageUrl());
-        newUser.setLangKey(userDTO.getLangKey());
-        // new user is not active
-        newUser.setActivated(false);
-        // new user gets registration key
-        newUser.setActivationKey(RandomUtil.generateActivationKey());
-        Set<Authority> authorities = new HashSet<>();
-        authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
-        newUser.setAuthorities(authorities);
-        userRepository.save(newUser);
-        this.clearUserCaches(newUser);
-        log.debug("Created Information for User: {}", newUser);
-        return newUser;
-    }*/
 
     public User createUser(ManagedUserVM userVM) {
         if (!ValidationUtil.validateMelliCode(userVM.getUsername())){
@@ -132,7 +74,7 @@ public class UserService extends QueryService<User> {
             Set<Role> authorities = userVM
                     .getAuthorities()
                     .stream()
-                    .map(roleRepository::findByName)
+                    .map(roleRepository::findById)
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .collect(Collectors.toSet());
@@ -166,7 +108,7 @@ public class UserService extends QueryService<User> {
                     userDTO
                             .getAuthorities()
                             .stream()
-                            .map(roleRepository::findByName)
+                            .map(roleRepository::findById)
                             .filter(Optional::isPresent)
                             .map(Optional::get)
                             .forEach(managedAuthorities::add);
@@ -183,103 +125,15 @@ public class UserService extends QueryService<User> {
         return userRepository.findOneWithAuthoritiesByUsername(username);
     }
 
-    /*public void deleteUser(String login) {
-        userRepository
-            .findOneByLogin(login)
-            .ifPresent(user -> {
-                userRepository.delete(user);
-                this.clearUserCaches(user);
-                log.debug("Deleted User: {}", user);
-            });
-    }*/
 
-
-
-    /*public void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl) {
-        SecurityUtils
-            .getCurrentUserLogin()
-            .flatMap(userRepository::findOneByLogin)
-            .ifPresent(user -> {
-                user.setFirstName(firstName);
-                user.setLastName(lastName);
-                if (email != null) {
-                    user.setEmail(email.toLowerCase());
-                }
-                user.setLangKey(langKey);
-                user.setImageUrl(imageUrl);
-                userRepository.save(user);
-                this.clearUserCaches(user);
-                log.debug("Changed Information for User: {}", user);
-            });
-    }*/
-
-   /* @Transactional
-    public void changePassword(String currentClearTextPassword, String newPassword) {
-        SecurityUtils
-            .getCurrentUserLogin()
-            .flatMap(userRepository::findOneByLogin)
-            .ifPresent(user -> {
-                String currentEncryptedPassword = user.getPassword();
-                if (!passwordEncoder.matches(currentClearTextPassword, currentEncryptedPassword)) {
-                    throw new InvalidPasswordException();
-                }
-                String encryptedPassword = passwordEncoder.encode(newPassword);
-                user.setPassword(encryptedPassword);
-                this.clearUserCaches(user);
-                log.debug("Changed password for User: {}", user);
-            });
-    }*/
 
     @Transactional(readOnly = true)
     public Page<AdminUserDTO> getAllManagedUsers(UserCriteria criteria, Pageable pageable) {
-        final Specification<User> specification = createSpecification(criteria);
-        return userRepository.findAll(specification,pageable).map(AdminUserDTO::new);
-    }
-    /*@Transactional(readOnly = true)
-    public Page<UserDTO> getAllPublicUsers(Pageable pageable) {
-        return userRepository.findAllByIdNotNullAndActivatedIsTrue(pageable).map(UserDTO::new);
-    }*/
-
-    /*@Transactional(readOnly = true)
-    public Optional<User> getUserWithAuthoritiesByLogin(String login) {
-        return userRepository.findOneWithAuthoritiesByLogin(login);
-    }*/
-
-    /*@Transactional(readOnly = true)
-    public Optional<User> getUserWithAuthorities() {
-        return SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithAuthoritiesByLogin);
-    }*/
-
-    /**
-     * Not activated users should be automatically deleted after 3 days.
-     * <p>
-     * This is scheduled to get fired everyday, at 01:00 (am).
-     */
-   /* @Scheduled(cron = "0 0 1 * * ?")
-    public void removeNotActivatedUsers() {
-        userRepository
-            .findAllByActivatedIsFalseAndActivationKeyIsNotNullAndCreatedDateBefore(Instant.now().minus(3, ChronoUnit.DAYS))
-            .forEach(user -> {
-                log.debug("Deleting not activated user {}", user.getLogin());
-                userRepository.delete(user);
-                this.clearUserCaches(user);
-            });
-    }*/
-
-    /**
-     * Gets a list of all the authorities.
-     *
-     * @return a list of all the authorities.
-     */
-    /*@Transactional(readOnly = true)
-    public List<String> getAuthorities() {
-        return authorityRepository.findAll().stream().map(Authority::getName).toList();
-    }*/
-    private void clearUserCaches(User user) {
-        Objects.requireNonNull(cacheManager.getCache(UserRepository.USERS_BY_USERNAME_CACHE)).evict(user.getUsername());
+//        final Specification<User> specification = createSpecification(criteria);
+        return userRepository.findAll(/*specification,*/pageable).map(AdminUserDTO::new);
     }
 
-    protected Specification<User> createSpecification(UserCriteria criteria) {
+    /*protected Specification<User> createSpecification(UserCriteria criteria) {
         Specification<User> specification = Specification.where(null);
         if (criteria != null) {
             if (criteria.getDistinct() != null) {
@@ -299,5 +153,9 @@ public class UserService extends QueryService<User> {
             }
         }
         return specification;
+    }*/
+
+    private void clearUserCaches(User user) {
+        Objects.requireNonNull(cacheManager.getCache(UserRepository.USERS_BY_USERNAME_CACHE)).evict(user.getUsername());
     }
 }

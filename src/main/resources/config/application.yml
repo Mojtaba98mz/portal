@@ -2,8 +2,10 @@ server:
   port: 8090
 spring:
   profiles:
-    active: prod
-
+    active: dev
+mongock:
+  migration-scan-package:
+    - com.isiran.portal.config.dbmigrations
 # App Properties
 portal:
   clientApp:

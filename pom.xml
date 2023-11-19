@@ -16,22 +16,36 @@
 
 	<properties>
 		<java.version>17</java.version>
-		<liquibase-plugin.password/>
-		<liquibase-plugin.url/>
-		<liquibase-plugin.username/>
-		<liquibase.version>4.23.1</liquibase.version>
 		<spring-boot.version>3.1.5</spring-boot.version>
 		<validation-api.version>3.0.2</validation-api.version>
 		<frontend-maven-plugin.version>1.13.4</frontend-maven-plugin.version>
 		<node.version>v18.17.1</node.version>
 		<npm.version>10.0.0</npm.version>
 		<hibernate.version>6.2.7.Final</hibernate.version>
+		<mongock.version>5.3.4</mongock.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<artifactId>spring-boot-starter-data-mongodb</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.mongock</groupId>
+			<artifactId>mongock-springboot-v3</artifactId>
+			<version>${mongock.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.mongock</groupId>
+			<artifactId>mongodb-springdata-v4-driver</artifactId>
+			<version>${mongock.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
 
 		<dependency>
@@ -127,12 +141,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.liquibase</groupId>
-			<artifactId>liquibase-core</artifactId>
-			<version>${liquibase.version}</version>
-		</dependency>
-
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
 		</dependency>
@@ -183,46 +191,6 @@
 					</excludes>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.liquibase</groupId>
-				<artifactId>liquibase-maven-plugin</artifactId>
-				<version>${liquibase.version}</version>
-				<configuration>
-					<changeLogFile>config/liquibase/master.xml</changeLogFile>
-					<diffChangeLogFile>${project.basedir}/src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
-					<driver>org.postgresql.Driver</driver>
-					<url>${liquibase-plugin.url}</url>
-					<defaultSchemaName/>
-					<username>${liquibase-plugin.username}</username>
-					<password>${liquibase-plugin.password}</password>
-					<referenceUrl>hibernate:spring:com.isiran.portal.domain?dialect=org.hibernate.dialect.PostgreSQLDialect&amp;hibernate.physical_naming_strategy=org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
-					<verbose>true</verbose>
-					<logging>debug</logging>
-					<contexts>!test</contexts>
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>org.liquibase</groupId>
-						<artifactId>liquibase-core</artifactId>
-						<version>${liquibase.version}</version>
-					</dependency>
-					<dependency>
-						<groupId>org.liquibase.ext</groupId>
-						<artifactId>liquibase-hibernate6</artifactId>
-						<version>${liquibase.version}</version>
-					</dependency>
-					<dependency>
-						<groupId>org.springframework.boot</groupId>
-						<artifactId>spring-boot-starter-data-jpa</artifactId>
-						<version>${spring-boot.version}</version>
-					</dependency>
-					<dependency>
-						<groupId>jakarta.validation</groupId>
-						<artifactId>jakarta.validation-api</artifactId>
-						<version>${validation-api.version}</version>
-					</dependency>
-				</dependencies>
-			</plugin>
 		</plugins>
 	</build>
 
@@ -233,14 +201,6 @@
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
-			<properties>
-				<!-- default Spring profiles -->
-<!--				<spring.profiles.active>dev${profile.tls}${profile.no-liquibase}</spring.profiles.active>-->
-<!--				<profile.test>testdev</profile.test>-->
-				<liquibase-plugin.url>jdbc:postgresql://localhost:5432/portal</liquibase-plugin.url>
-				<liquibase-plugin.username>postgres</liquibase-plugin.username>
-				<liquibase-plugin.password>changeme</liquibase-plugin.password>
-			</properties>
 			<dependencies>
 				<dependency>
 					<groupId>org.springframework.boot</groupId>
@@ -337,11 +297,4 @@
 			</properties>
 		</profile>
 	</profiles>
-	<repositories>
-		<repository>
-			<id>spring-milestones</id>
-			<name>Spring Milestones</name>
-			<url>https://repo.spring.io/milestone</url>
-		</repository>
-	</repositories>
 </project>
