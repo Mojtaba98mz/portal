@@ -1,6 +1,5 @@
 package com.isiran.portal.service.criteria;
 
-import com.isiran.portal.service.filter.LongFilter;
 import com.isiran.portal.service.filter.StringFilter;
 import lombok.Data;
 import org.springdoc.core.annotations.ParameterObject;
