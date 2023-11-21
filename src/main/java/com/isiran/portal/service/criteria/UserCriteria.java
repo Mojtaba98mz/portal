@@ -13,11 +13,10 @@ public class UserCriteria implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private LongFilter id;
+    private StringFilter id;
     private StringFilter username;
     private StringFilter firstName;
     private StringFilter lastName;
-    private Boolean distinct;
 
     public UserCriteria() {
     }

@@ -1,5 +1,6 @@
 package com.isiran.portal.service;
 
+import com.isiran.portal.domain.QUser;
 import com.isiran.portal.domain.Role;
 import com.isiran.portal.domain.User;
 import com.isiran.portal.repository.RoleRepository;
@@ -11,6 +12,11 @@ import com.isiran.portal.service.criteria.UserCriteria;
 import com.isiran.portal.util.KeyPairGeneratorUtil;
 import com.isiran.portal.util.ValidationUtil;
 import com.isiran.portal.web.rest.vm.ManagedUserVM;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
@@ -57,7 +63,7 @@ public class UserService /*extends QueryService<User>*/ {
 
 
     public User createUser(ManagedUserVM userVM) {
-        if (!ValidationUtil.validateMelliCode(userVM.getUsername())){
+        if (!ValidationUtil.validateMelliCode(userVM.getUsername())) {
             throw new InvalidNationalCodeException();
         }
         User user = new User();
@@ -125,35 +131,31 @@ public class UserService /*extends QueryService<User>*/ {
         return userRepository.findOneWithAuthoritiesByUsername(username);
     }
 
-
-
     @Transactional(readOnly = true)
     public Page<AdminUserDTO> getAllManagedUsers(UserCriteria criteria, Pageable pageable) {
-//        final Specification<User> specification = createSpecification(criteria);
-        return userRepository.findAll(/*specification,*/pageable).map(AdminUserDTO::new);
+        BooleanBuilder predicate = createPredicate(criteria);
+        return userRepository.findAll(predicate, pageable).map(AdminUserDTO::new);
     }
 
-    /*protected Specification<User> createSpecification(UserCriteria criteria) {
-        Specification<User> specification = Specification.where(null);
+    protected BooleanBuilder createPredicate(UserCriteria criteria) {
+        QUser user = QUser.user;
+        BooleanBuilder builder = new BooleanBuilder();
         if (criteria != null) {
-            if (criteria.getDistinct() != null) {
-                specification = specification.and(distinct(criteria.getDistinct()));
-            }
             if (criteria.getId() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getId(), User_.id));
+                builder.and(user.id.containsIgnoreCase(criteria.getId().getContains()));
             }
             if (criteria.getUsername() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getUsername(), User_.username));
+                builder.and(user.username.containsIgnoreCase(criteria.getUsername().getContains()));
             }
             if (criteria.getFirstName() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getFirstName(), User_.firstName));
+                builder.and(user.firstName.containsIgnoreCase(criteria.getFirstName().getContains()));
             }
             if (criteria.getLastName() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getLastName(), User_.lastName));
+                builder.and(user.lastName.containsIgnoreCase(criteria.getLastName().getContains()));
             }
         }
-        return specification;
-    }*/
+        return builder;
+    }
 
     private void clearUserCaches(User user) {
         Objects.requireNonNull(cacheManager.getCache(UserRepository.USERS_BY_USERNAME_CACHE)).evict(user.getUsername());

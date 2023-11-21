@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.isiran.portal.config.Constants;
+import com.querydsl.core.annotations.QueryEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
@@ -17,6 +18,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 @Data
+@QueryEntity
 @Document(collection = "users")
 public class User extends AbstractAuditingEntity<String> implements Serializable {
 
