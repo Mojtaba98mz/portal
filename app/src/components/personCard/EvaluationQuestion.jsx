@@ -40,7 +40,6 @@ const EvaluationQuestion = () => {
         sx={{
           display: "flex",
           marginY: "10px",
-          display: "flex",
           justifyContent: "space-evenly",
           alignItems: "center",
           flexDirection: { xs: "column", sm: "row" },
