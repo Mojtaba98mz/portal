@@ -7,7 +7,7 @@ const EncryptText = (password) => {
 
   useEffect(()=>{
   const getPublickey = () => {
-    axios.get("/publicKey")
+    axios.get("/public/publicKey")
       .then(res => setPublickey(res.data))
       .catch(error => console.log(error))
   }
