@@ -14,13 +14,13 @@
   /* transition: height 600ms; */
 }
 .card:hover {
-  border-top: 5px solid green;
-  border-bottom: 5px solid green;
+  border: 1px solid green;
+  /* border-bottom: 5px solid green; */
   transform: scale(1.03);
   /* border: 1px solid green; */
   /* height: 380px; */
 
-  box-shadow: 4px 4px 14px rgba(0, 0, 0, 0.8);
+  /* box-shadow: 4px 4px 14px rgba(0, 0, 0, 0.6); */
 }
 p{
   font-family: "Yekan";

@@ -14,6 +14,7 @@
 }
 .cardText{
   display: flex;
+  flex-direction: column;
 }
 .header{
   font-family: "Yekan";
@@ -22,4 +23,8 @@
   /* box-shadow: 0px 0px  15px #00FF00; */
   transform: scale(1.02);
   border: 1px solid green;
+}
+.accordion{
+  width: 95%;
+  margin-top: 10px;
 }
