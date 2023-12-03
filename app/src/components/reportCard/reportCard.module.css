@@ -1,0 +1,30 @@
+
+.card {
+  font-family: "Yekan";
+  width: 200px;
+  height: 350px;
+  box-shadow: 4px 4px 14px rgba(0, 0, 0, 0.4);
+  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  border-radius: 20px;
+  transition: all 250ms;
+  margin:30px 0px
+  /* transition: height 600ms; */
+}
+.card:hover {
+  border: 1px solid green;
+  /* border-bottom: 5px solid green; */
+  transform: scale(1.03);
+  /* border: 1px solid green; */
+  /* height: 380px; */
+
+  /* box-shadow: 4px 4px 14px rgba(0, 0, 0, 0.6); */
+}
+p{
+  font-family: "Yekan";
+  font-weight: lighter;
+  font-size: 14px;
+}

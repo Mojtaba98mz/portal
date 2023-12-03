@@ -45,6 +45,7 @@ const Panel = () => {
                       justifyContent: "space-around",
                       alignItems: "center",
                       flexWrap: "wrap",
+                      // border:"1px solid yellow"
                     }}
                   >
                     <PanelRoutes></PanelRoutes>

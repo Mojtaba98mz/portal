@@ -131,7 +131,7 @@ export default function DataGridTable() {
       align: "center",
       headerAlign: "center",
       resizeable: true,
-      Width: 70,
+      Width: 80,
       headerClassName: "themeHeader",
     },
     {
@@ -139,13 +139,13 @@ export default function DataGridTable() {
       resizeable: true,
       headerName: "نام",
       headerAlign: "center",
-      width: 110,
+      width: 100,
       headerClassName: "themeHeader",
     },
     {
       field: "lastName",
       headerName: "نام خانوادگی",
-      width: 120,
+      width: 130,
       headerClassName: "themeHeader",
     },
     {
@@ -161,7 +161,7 @@ export default function DataGridTable() {
       headerName: "نام کاربری",
       description: "This column has a value getter and is not sortable.",
       sortable: false,
-      width: 100,
+      width: 132,
       headerClassName: "themeHeader",
       // valueGetter: (params) =>
       //   `${params.row.firstName || ""} ${params.row.lastName || ""}`,
@@ -173,7 +173,7 @@ export default function DataGridTable() {
       headerAlign: "center",
       type: "Date",
       sortable: true,
-      width: 170,
+      width: 200,
       headerClassName: "themeHeader",
       // valueGetter: (params) =>
       //   `${params.row.firstName || ""} ${params.row.lastName || ""}`,

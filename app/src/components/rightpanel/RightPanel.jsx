@@ -40,7 +40,7 @@ const RightPanel = () => {
                   marginRight: "20px",
                 },
               }}
-              primary="گزینش شماره 1"
+              primary="دوره های ارزیابی"
             ></ListItemText>
           </ListItemIcon>
         </ListItemButton>

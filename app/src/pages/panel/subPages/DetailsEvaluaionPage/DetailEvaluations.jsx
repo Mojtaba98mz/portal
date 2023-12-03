@@ -22,8 +22,7 @@ const DetailEvaluations = () => {
         <PersonCard personalCode={"1234567"} totallScore={"0"} finalScore={"20"} organization={"فلان"} fullName={"امیر مقراضی"} role={"همتراز"} job={"مدیر"} />
         <PersonCard personalCode={"1234567"} totallScore={"0"} finalScore={"20"} organization={"فلان"} fullName={"امیر مقراضی"} role={"همتراز"} job={"مدیر"} />
         <PersonCard personalCode={"1234567"} totallScore={"0"} finalScore={"20"} organization={"فلان"} fullName={"امیر مقراضی"} role={"همتراز"} job={"مدیر"} />
-      </div>
-      <Box sx={{ width: "100%", display: "flex", justifyContent: "center",marginBottom:"20px" }}>
+      <Box sx={{ width: "100%", display: "flex", justifyContent: "center",marginY:"40px" }}>
         <Stack spacing={2} >
           <Pagination count={10} color="primary" variant="outlined"  shape="circular" renderItem={(item) => (<PaginationItem
             slots={{ next: ArrowBackIosNewIcon, previous: ArrowForwardIosIcon }}
@@ -33,6 +32,7 @@ const DetailEvaluations = () => {
           />
         </Stack>
       </Box>
+      </div>
     </>
   );
 };
