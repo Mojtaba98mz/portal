@@ -1,5 +1,6 @@
 import {
   Box,
+  Divider,
   FormControl,
   IconButton,
   InputLabel,
@@ -25,6 +26,7 @@ const EvaluationQuestion = () => {
         color: grey[700],
       }}
     >
+      <Divider textAlign="left"  variant="middle" sx={{width:"90%", marginX:"auto",marginBottom:"10px"}}>
       <Typography
         variant="body1"
         fontFamily="Yekan"
@@ -34,8 +36,9 @@ const EvaluationQuestion = () => {
           textShadow: "1px 0px 1px #CCCCCC, 0px 1px 1px #EEEEEE, 2px 1px 1px #CCCCCC, 1px 2px 1px #EEEEEE, 3px 2px 1px #CCCCCC, 2px 3px 1px #EEEEEE, 4px 3px 1px #CCCCCC, 3px 4px 1px #EEEEEE, 5px 4px 1px #CCCCCC, 4px 5px 1px #EEEEEE, 6px 5px 1px #CCCCCC, 5px 6px 1px #EEEEEE, 7px 6px 1px #CCCCCC, 7px 10px 9px #9ACE34",
         }}
       >
-        شایستگی :{"جدید"}{" "}
+        شایستگی : {"جدید"}{" "}
       </Typography>
+      </Divider>
       <Box
         sx={{
           display: "flex",

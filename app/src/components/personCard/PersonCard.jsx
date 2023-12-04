@@ -7,6 +7,7 @@ import {
   AccordionSummary,
   Box,
   Button,
+  Chip,
   Divider,
   List,
   ListItem,
@@ -14,7 +15,7 @@ import {
 } from "@mui/material";
 import PropTypes from "prop-types";
 import EvaluationQuestion from "./EvaluationQuestion";
-import {green, grey}from "@mui/material/colors"
+import { green, grey } from "@mui/material/colors"
 const PersonCard = ({
   fullName,
   personalCode,
@@ -43,69 +44,69 @@ const PersonCard = ({
               justifyContent: "space-evenly",
               alignItems: "center",
               flexDirection: { xs: "column-reverse", sm: "row" },
-              color:grey[700]
+              color: grey[700]
             }}
           >
+
             <Box>
-              <Typography variant="body1" >نمره نهایی</Typography>
+             <Chip variant="outlined" color="error" label={<Typography variant="body1" >نمره نهایی</Typography>}/>
               <Typography variant="body2" sx={{ fontFamily: "Yekan", textAlign: "center" }}>{finalScore}</Typography>
             </Box>
             <Box>
-              <Typography variant="body1">جمع نمرات</Typography>
+              <Chip variant="outlined" color="success" label={<Typography variant="body1">جمع نمرات</Typography>}/>
               <Typography variant="body2" sx={{ fontFamily: "Yekan", textAlign: "center" }}>{totallScore}</Typography>
             </Box>
             <Box>
-              <Typography variant="body1">شغل </Typography>
+              <Chip variant="outlined" color="info" label={<Typography variant="body1">شغل </Typography>}/>
               <Typography variant="body2" sx={{ fontFamily: "Yekan", textAlign: "center" }}>{job}</Typography>
             </Box>
             <Box>
-              <Typography variant="body1"> نقش</Typography>
+
+              <Chip variant="outlined" color="info" label={<Typography variant="body1"> نقش</Typography>}/>
               <Typography variant="body2" sx={{ fontFamily: "Yekan", textAlign: "center" }}>{role} </Typography>
             </Box>
             <Box>
-              <Typography variant="body1">یگان</Typography>
+              <Chip variant="outlined" color="info" label={<Typography variant="body1">یگان</Typography>}/>
               <Typography variant="body2" sx={{ fontFamily: "Yekan", textAlign: "center" }} >{organization}</Typography>
             </Box>
 
             <Box>
-              <Typography variant="body1">نام کارمند ارزیابی شونده</Typography>
+              <Chip variant="outlined" color="info" label={<Typography variant="body1">نام کارمند ارزیابی شونده</Typography>}/>
               <Typography variant="body2" sx={{ fontFamily: "Yekan", textAlign: "center" }}>
                 {fullName}
               </Typography>
             </Box>
             <div className={styles.cardText}>
-              <Typography className={styles.header}>شماره پرسنلی </Typography>
+              <Chip variant="outlined" color="info" label={<Typography className={styles.header}>شماره پرسنلی </Typography>}/>
               <p>{personalCode}</p>
             </div>
           </Box>
-        </AccordionSummary>
-        <AccordionDetails>
-          <List>
-            <Divider variant="middle" sx={{width:"90%",marginX:"auto",marginBottom:"10px"}}/>
-            <ListItem>
-              <EvaluationQuestion />
-            </ListItem>
-            <Divider variant="middle" sx={{width:"90%",marginX:"auto",marginY:"20px"}}/>
-            <ListItem>
-              <EvaluationQuestion />
-            </ListItem>
-            <Divider variant="middle" sx={{width:"90%",marginX:"auto",marginY:"20px"}}/>
-          </List>
-          <Button
-            variant="contained"
-            color="primary"
-            sx={hover}
-            onClick={() =>
-              navigate(`/panel/evaluations/${param.id}/${personalCode}`)
-            }
-          >
-            <Typography variant="body1" fontFamily="YeKan">
-              ثبت ارزیابی
-            </Typography>
-          </Button>
-        </AccordionDetails>
-      </Accordion>
-    </div>
+
+      </AccordionSummary>
+      <AccordionDetails>
+        <List>
+          <ListItem>
+            <EvaluationQuestion />
+          </ListItem>
+          <ListItem>
+            <EvaluationQuestion />
+          </ListItem>
+        </List>
+        <Button
+          variant="contained"
+          color="primary"
+          sx={hover}
+          onClick={() =>
+            navigate(`/panel/evaluations/${param.id}/${personalCode}`)
+          }
+        >
+          <Typography variant="body1" fontFamily="YeKan">
+            ثبت ارزیابی
+          </Typography>
+        </Button>
+      </AccordionDetails>
+    </Accordion>
+    </div >
   );
 };
 

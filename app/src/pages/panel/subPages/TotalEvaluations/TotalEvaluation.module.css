@@ -5,8 +5,7 @@
   /* margin: 20px; */
   padding-bottom: 100px;
   /* gap: 15px; */
-  justify-content:space-evenly;
+  justify-content: space-evenly;
   flex-wrap: wrap;
   align-items: center;
-  /* border:1px solid red; */
 }
