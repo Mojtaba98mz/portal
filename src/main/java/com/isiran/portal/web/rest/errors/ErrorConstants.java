@@ -9,5 +9,8 @@ public final class ErrorConstants {
     public static final String DEFAULT_TYPE = "problem-with-message";
     public static final String LOGIN_ALREADY_USED_TYPE = "login-already-used";
     public static final String INVALID_NATIONAL_CODE = "invalid-national-code";
+    public static final String ERR_CONCURRENCY_FAILURE = "error.concurrencyFailure";
+    public static final String ERR_VALIDATION = "error.validation";
+
     private ErrorConstants() {}
 }
