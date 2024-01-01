@@ -5,6 +5,7 @@ import { green, grey, blueGrey } from "@mui/material/colors"
 import PrintIcon from '@mui/icons-material/Print';
 import EditIcon from '@mui/icons-material/Edit';
 import ReactToPrint from 'react-to-print'
+import TableCustomize from './TableCustomize';
 const ReportPage = () => {
   const componentRef = useRef()
   const [showModal, setShowModal] = useState(false)
@@ -18,6 +19,35 @@ const ReportPage = () => {
   }
   const dateOption = { month: "long", day: "numeric", weekday: "long", year: "numeric", }
 
+  const table3Head = [
+    "نتیجه مورد انتظار",
+    "زمان بندی اقدامات",
+    "اقدامات",
+    "حوزه"
+  ]
+  const table3Rows = [
+    "row 1",
+    "row2",
+    "row3",
+    "row4"
+  ]
+  const table1Head = [
+    "یگان عمده",
+    "یگان جزء",
+    "فرمانده با واسطه",
+    "شغل سازمانی",
+    "شغل عملی",
+    "فرمانده مستفیم"
+  ]
+  const table1Row = [
+    "row1",
+    "row2",
+    "row3",
+    "row4",
+    "row5",
+    "row6"
+  ]
+
   return (
     <Box style={{ width: "100%" }}>
 
@@ -30,32 +60,7 @@ const ReportPage = () => {
               <Chip variant='outlined' color='primary' label={<Typography>مشخصات ارزیابی شونده: {1}</Typography>} ></Chip>
             </Box>
             <Chip variant='outlined' sx={{ marginLeft: "65%" }} color="error" label={<Typography>رده: {1}</Typography>}></Chip>
-            <Box width="100%" display="flex" justifyContent="center" marginY="60px">
-              <TableContainer component={Paper} sx={{ width: "90%" }} >
-                <Table>
-                  <TableHead sx={{ background: blueGrey[500] }} >
-                    <TableRow >
-                      <TableCell align="center" sx={{ color: "white" }} >یگان عمده</TableCell>
-                      <TableCell align="center" sx={{ color: "white" }}>یگان جزء</TableCell>
-                      <TableCell align="center" sx={{ color: "white" }}>فرمانده با واسطه</TableCell>
-                      <TableCell align="center" sx={{ color: "white" }}>شغل سازمانی</TableCell>
-                      <TableCell align="center" sx={{ color: "white" }}>شغل عملی</TableCell>
-                      <TableCell align="center" sx={{ color: "white" }}>فرمانده مستفیم</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell align='center'>Row 1</TableCell>
-                      <TableCell align="center">Row 1</TableCell>
-                      <TableCell align="center">Row 1</TableCell>
-                      <TableCell align="center">Row 1</TableCell>
-                      <TableCell align="center">Row 1</TableCell>
-                      <TableCell align="center">Row 1</TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Box>
+            <TableCustomize tableHead={table1Head} tableRow={table1Row} widthTable={"90%"}></TableCustomize>
             <Box width="100%" display="flex" justifyContent="center" marginY="60px">
               <TableContainer component={Paper} sx={{ width: "80%" }} >
                 <Table>
@@ -79,28 +84,7 @@ const ReportPage = () => {
               </TableContainer>
             </Box>
 
-            <Box width="100%" display="flex" justifyContent="center" marginY="60px">
-              <TableContainer component={Paper} sx={{ width: "90%" }} >
-                <Table>
-                  <TableHead sx={{ background: blueGrey[500] }} >
-                    <TableRow >
-                      <TableCell align="center" sx={{ color: "white" }}>نتیجه مورد انتظار</TableCell>
-                      <TableCell align="center" sx={{ color: "white" }}>زمان بندی اقدامات</TableCell>
-                      <TableCell align="center" sx={{ color: "white" }}>اقدامات</TableCell>
-                      <TableCell align="center" sx={{ color: "white" }} >حوزه </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell align='center' sx={{ width: "200px", wordBreak: "break-word" }}>Row 1</TableCell>
-                      <TableCell align="center" >Row1</TableCell>
-                      <TableCell align="center">Row 1</TableCell>
-                      <TableCell align="center">Row 1</TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Box>
+            <TableCustomize tableRow={table3Rows} tableHead={table3Head} widthTable={"90%"}></TableCustomize>
 
             <Box sx={{ display: "flex", justifyContent: "space-evenly", marginY: "10px" }}>
               <Chip variant='outlined' color="success" label={<Typography>مشاغل پیشنهادی-کوتاه مدت: {1}</Typography>}></Chip>
